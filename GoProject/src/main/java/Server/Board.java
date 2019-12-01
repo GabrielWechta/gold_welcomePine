@@ -17,6 +17,15 @@ public class Board {
 	public Board(int size) {
 		this.boardSize = size;
 		this.intersections = new Intersection[boardSize][boardSize];
+		initBoard();
+	}
+	
+	public void initBoard() {
+		for(int i = 0; i < boardSize; i++) {
+			for(int j = 0; j < boardSize; j++) {
+				intersections[i][j] = new Intersection(i,j);
+			}
+		}
 	}
 
 	/**
@@ -39,5 +48,27 @@ public class Board {
 			return false;
 	}
 
+
+	public Intersection getIntersection(int x, int y) {
+		return intersections[x][y];
+	}
+
+	public void playStone(int x, int y, Player owner) {
+		if (isIn(x, y))
+			intersections[x][y].setOwner(owner);
+		else
+			System.out.println("OutOfBands");
+	}
+
+	public void showBoard() {
+		for (int i = boardSize - 1; i >= 0; i--) {
+			for (int j = 0; j < boardSize; j++) {
+				Player owner = intersections[j][i].getOwner();
+				if(owner != null) System.out.print(owner.getColor());
+				else System.out.print("0");
+			}
+			System.out.println();
+		}
+	}
 
 }
