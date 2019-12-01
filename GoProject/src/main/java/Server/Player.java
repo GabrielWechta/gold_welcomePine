@@ -8,7 +8,11 @@ public class Player {
 		this.color = color;
 		this.board = board;
 	}
-	
+
+	public Player(int color) {
+		this.color = color;
+	}
+
 	public void playStone(int x, int y) {
 		board.playStone(x, y, this);
 	}
@@ -20,6 +24,5 @@ public class Player {
 	public void setColor(int color) {
 		this.color = color;
 	}
-	
-	
+
 }
