@@ -1,14 +1,5 @@
 package Server;
 
-import java.awt.Point;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import Exceptions.IllegalRockColorException;
-import Exceptions.OutOfBoardsBoundsException;
-import Exceptions.StoneAlreadyThereException;
-
 public class Board {
 
 	private Intersection[][] intersections;
@@ -23,7 +14,7 @@ public class Board {
 	public void initBoard() {
 		for(int i = 0; i < boardSize; i++) {
 			for(int j = 0; j < boardSize; j++) {
-				intersections[i][j] = new Intersection(i,j);
+				intersections[i][j] = new Intersection(i,j,this);
 			}
 		}
 	}
@@ -55,7 +46,7 @@ public class Board {
 
 	public void playStone(int x, int y, Player owner) {
 		if (isIn(x, y))
-			intersections[x][y].setOwner(owner);
+			intersections[x][y].putToken(owner);
 		else
 			System.out.println("OutOfBands");
 	}
