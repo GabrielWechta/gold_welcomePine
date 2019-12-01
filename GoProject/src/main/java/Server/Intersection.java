@@ -7,17 +7,21 @@ public class Intersection {
 
 	private final int x, y;
 	private StoneChain stoneChain;
-	private Player owner;
+	private Player owner = null;
 	private Board board;
-	
-	//regular constructor
+
+	// regular constructor
 	public Intersection(int x, int y, StoneChain stoneChain) {
-		super();
 		this.x = x;
 		this.y = y;
 		this.stoneChain = stoneChain;
 	}
-	
+
+	public Intersection(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
 
 	public StoneChain getStoneChain() {
 		return stoneChain;
@@ -43,25 +47,30 @@ public class Intersection {
 		this.owner = owner;
 	}
 
+	public boolean isEmpty() {
+		if (this.owner == null)
+			return false;
+		else
+			return true;
+	}
 
-	public Intersection getEmptyNeighbors() {
+	public List<Intersection> getEmptyNeighbors() {
 		List<Intersection> emptyNeighbors = new ArrayList<Intersection>();
-		
-		int xTable[] = {-1,0,1,0};
-		int yTable[] = {0,-1,0,1};
-		
-		for(int i = 0; i < xTable.length; i++)
-		{
+
+		int xTable[] = { -1, 0, 1, 0 };
+		int yTable[] = { 0, -1, 0, 1 };
+
+		for (int i = 0; i < xTable.length; i++) {
 			int newX = this.x + xTable[i];
 			int newY = this.y + xTable[i];
-			
-			if(board.isIn(newX, newY)) {
-				
+
+			if (board.isIn(newX, newY)) {
+				Intersection sharedWallIntersection = board.getIntersection(newX, newY);
+				if (sharedWallIntersection.isEmpty())
+					emptyNeighbors.add(sharedWallIntersection);
 			}
 		}
-		return null;
+		return emptyNeighbors;
 	}
-	
-	
-	
+
 }
