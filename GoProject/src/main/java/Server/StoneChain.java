@@ -21,6 +21,6 @@ public class StoneChain {
 		stones.add(intersection);
 		this.owner = owner;
 		liberties = new HashSet<Intersection>();
-		liberties.add(intersection.getEmptyNeighbors());
+		liberties.addAll(intersection.getEmptyNeighbors());
 	}
 }
