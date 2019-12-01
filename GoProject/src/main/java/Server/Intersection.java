@@ -52,6 +52,9 @@ public class Intersection {
 		
 		for(int i = 0; i < xTable.length; i++)
 		{
+			int newX = this.x + xTable[i];
+			int newY = this.y + xTable[i];
+			
 			if(board.isIn(newX, newY)) {
 				
 			}

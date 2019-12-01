@@ -32,4 +32,11 @@ public class Board {
 		}
 	}
 
+	public boolean isIn(int x, int y) {
+		if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
+			return true;
+		else
+			return false;
+	}
+
 }
