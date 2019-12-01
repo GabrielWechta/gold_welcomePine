@@ -10,7 +10,7 @@ public class Board {
 		this.intersections = new Intersection[boardSize][boardSize];
 		initBoard();
 	}
-	
+
 	public void initBoard() {
 		for(int i = 0; i < boardSize; i++) {
 			for(int j = 0; j < boardSize; j++) {
@@ -39,7 +39,6 @@ public class Board {
 			return false;
 	}
 
-
 	public Intersection getIntersection(int x, int y) {
 		return intersections[x][y];
 	}
@@ -55,8 +54,10 @@ public class Board {
 		for (int i = boardSize - 1; i >= 0; i--) {
 			for (int j = 0; j < boardSize; j++) {
 				Player owner = intersections[j][i].getOwner();
-				if(owner != null) System.out.print(owner.getColor());
-				else System.out.print("0");
+				if (owner != null)
+					System.out.print(owner.getColor());
+				else
+					System.out.print("0");
 			}
 			System.out.println();
 		}
