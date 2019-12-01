@@ -10,7 +10,10 @@ public class ApplicationClass {
 		Player playerB = new Player(1, board);
 		Player playerW = new Player(2, board);
 		
-		playerB.playStone(1, 1);
+	//	playerB.playStone(7,7);
+
+		
+		playerB.playStone(0, 0);
 		
 		System.out.println();
 		
