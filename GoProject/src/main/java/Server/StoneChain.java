@@ -1,5 +1,6 @@
 package Server;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class StoneChain {
@@ -13,5 +14,13 @@ public class StoneChain {
 		this.stones = stones;
 		this.liberties = liberties;
 		this.owner = owner;
+	}
+	
+	public StoneChain(Intersection intersection, Player owner) {
+		this.stones = new HashSet<Intersection>();
+		stones.add(intersection);
+		this.owner = owner;
+		liberties = new HashSet<Intersection>();
+		liberties.add(intersection.getEmptyNeighbors());
 	}
 }
