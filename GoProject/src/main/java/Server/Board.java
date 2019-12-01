@@ -48,6 +48,7 @@ public class Board {
 			return false;
 	}
 
+
 	public Intersection getIntersection(int x, int y) {
 		return intersections[x][y];
 	}
@@ -69,4 +70,5 @@ public class Board {
 			System.out.println();
 		}
 	}
+
 }

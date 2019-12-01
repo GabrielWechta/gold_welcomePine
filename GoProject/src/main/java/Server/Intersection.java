@@ -2,8 +2,31 @@ package Server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Intersection {
+
+
+
+
+
+
+
+
+
+    public void setOwner(Player owner) {
+        Set<Intersection> neighbors = getNotEmptyNeighbors();
+        Intersection currentNeighbors;
+
+        	new StoneChain(this,owner);
+		if (!neighbors.isEmpty()) {
+
+			for (Intersection intersection : neighbors
+			) {
+this.stoneChain.merge(intersection.getStoneChain());
+			}
+		}
+    }
 
 	private final int x, y;
 	private StoneChain stoneChain;
@@ -43,9 +66,7 @@ public class Intersection {
 		return owner;
 	}
 
-	public void setOwner(Player owner) {
-		this.owner = owner;
-	}
+
 
 	public boolean isEmpty() {
 		if (this.owner == null)
@@ -72,5 +93,6 @@ public class Intersection {
 		}
 		return emptyNeighbors;
 	}
+
 
 }
