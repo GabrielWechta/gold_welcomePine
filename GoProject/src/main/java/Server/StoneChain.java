@@ -53,4 +53,11 @@ public class StoneChain {
         liberties.remove(intersection);
     }
 
+    public int getLibertiesNumber() {
+        return liberties.size();
+    }
+
+    public int getStoneNumber() {
+        return stones.size();
+    }
 }

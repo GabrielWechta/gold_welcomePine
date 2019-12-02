@@ -5,6 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import Exceptions.KoExeption;
+import Exceptions.OutOfBoardsBoundsException;
+import Exceptions.StoneAlreadyThereException;
+import Exceptions.SuicidalTurnExeption;
 import org.junit.Test;
 
 import GameMaster.ScoreHandler;
@@ -21,10 +25,21 @@ public class ScoreHandlerTest {
 
 		Player playerB = new Player(1, board);
 
-		playerB.playStone(2, 0);
-		playerB.playStone(2, 1);
-		playerB.playStone(1, 1);
-		playerB.playStone(0, 2);
+		try {
+			playerB.playStone(2, 0);
+			playerB.playStone(2, 1);
+			playerB.playStone(1, 1);
+			playerB.playStone(0, 2);
+		} catch (OutOfBoardsBoundsException e) {
+			e.printStackTrace();
+		} catch (KoExeption koExeption) {
+			koExeption.printStackTrace();
+		} catch (SuicidalTurnExeption suicidalTurnExeption) {
+			suicidalTurnExeption.printStackTrace();
+		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		}
+
 //		playerB.playStone(0, 3);
 
 		Set<Intersection> island = scoreHandler.createIsland(board.getIntersection(0, 8));
@@ -42,10 +57,21 @@ public class ScoreHandlerTest {
 
 		Player playerW = new Player(2, board);
 
-		playerW.playStone(3, 3);
-		playerW.playStone(2, 4);
-		playerW.playStone(3, 5);
-		playerW.playStone(4, 4);
+		try {
+			playerW.playStone(3, 3);
+			playerW.playStone(2, 4);
+			playerW.playStone(3, 5);
+			playerW.playStone(4, 4);
+		} catch (OutOfBoardsBoundsException e) {
+			e.printStackTrace();
+		} catch (KoExeption koExeption) {
+			koExeption.printStackTrace();
+		} catch (SuicidalTurnExeption suicidalTurnExeption) {
+			suicidalTurnExeption.printStackTrace();
+		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		}
+
 
 		Set<Intersection> island = scoreHandler.createIsland(board.getIntersection(3, 4));
 		scoreHandler.checkIslandBorder(island);
@@ -63,15 +89,26 @@ public class ScoreHandlerTest {
 		Player playerB = new Player(1, board);
 		Player playerW = new Player(2, board);
 
-		playerW.playStone(3, 3);
-		playerW.playStone(2, 4);
-		playerW.playStone(3, 5);
-		playerW.playStone(4, 4);
+		try {
+			playerW.playStone(3, 3);
+			playerW.playStone(2, 4);
+			playerW.playStone(3, 5);
+			playerW.playStone(4, 4);
 
-		playerB.playStone(2, 0);
-		playerB.playStone(2, 1);
-		playerB.playStone(1, 1);
-		playerB.playStone(0, 2);
+			playerB.playStone(2, 0);
+			playerB.playStone(2, 1);
+			playerB.playStone(1, 1);
+			playerB.playStone(0, 2);
+		} catch (OutOfBoardsBoundsException e) {
+			e.printStackTrace();
+		} catch (KoExeption koExeption) {
+			koExeption.printStackTrace();
+		} catch (SuicidalTurnExeption suicidalTurnExeption) {
+			suicidalTurnExeption.printStackTrace();
+		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		}
+
 
 		Set<Intersection> island = scoreHandler.createIsland(board.getIntersection(3, 4));
 		scoreHandler.checkIslandBorder(island);
@@ -102,15 +139,26 @@ public class ScoreHandlerTest {
 		Player playerB = new Player(1, board);
 		Player playerW = new Player(2, board);
 
-		playerW.playStone(3, 3);
-		playerW.playStone(2, 4);
-		playerW.playStone(3, 5);
-		playerW.playStone(4, 4);
+		try {
+			playerW.playStone(3, 3);
+			playerW.playStone(2, 4);
+			playerW.playStone(3, 5);
+			playerW.playStone(4, 4);
 
-		playerB.playStone(2, 0);
-		playerB.playStone(2, 1);
-		playerB.playStone(1, 1);
-		playerB.playStone(0, 2);
+			playerB.playStone(2, 0);
+			playerB.playStone(2, 1);
+			playerB.playStone(1, 1);
+			playerB.playStone(0, 2);
+		} catch (OutOfBoardsBoundsException e) {
+			e.printStackTrace();
+		} catch (KoExeption koExeption) {
+			koExeption.printStackTrace();
+		} catch (SuicidalTurnExeption suicidalTurnExeption) {
+			suicidalTurnExeption.printStackTrace();
+		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		}
+
 		
 		scoreHandler.calculateTerritoryScore();
 
