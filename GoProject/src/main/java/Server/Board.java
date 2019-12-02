@@ -12,9 +12,9 @@ public class Board {
 	}
 
 	public void initBoard() {
-		for(int i = 0; i < boardSize; i++) {
-			for(int j = 0; j < boardSize; j++) {
-				intersections[i][j] = new Intersection(i,j,this);
+		for (int i = 0; i < boardSize; i++) {
+			for (int j = 0; j < boardSize; j++) {
+				intersections[i][j] = new Intersection(i, j, this);
 			}
 		}
 	}
@@ -61,6 +61,10 @@ public class Board {
 			}
 			System.out.println();
 		}
+	}
+	//added get 
+	public int getBoardSize() {
+		return boardSize;
 	}
 
 }

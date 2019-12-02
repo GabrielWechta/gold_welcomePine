@@ -13,7 +13,8 @@ public class Mediator {
 	private Board board;
 	private char turn = 'B';
 
-	public Mediator(Player playerB, Player playerW, Board board) {
+	/** used when we are ready to start the game */
+	public Mediator(Player playerB, Player playerW, Board board) { 
 		this.playerB = playerB;
 		this.playerW = playerW;
 		this.board = board;
@@ -27,7 +28,8 @@ public class Mediator {
 		}
 		return false;
 	}
-
+	
+	/** private method helper in start()*/
 	private int getXFromInput(String input) {
 		try {
 			int x = Integer.parseInt(input.subSequence(0, input.indexOf(';')).toString());
@@ -38,7 +40,8 @@ public class Mediator {
 		}
 		return -1;
 	}
-
+	
+	/** private method helper in start()*/
 	private int getYFromInput(String input) {
 		try {
 			int y = Integer.parseInt(input.subSequence(input.indexOf(';') + 1, input.length()).toString());
@@ -49,7 +52,8 @@ public class Mediator {
 		}
 		return -1;
 	}
-
+	
+	/** to be filled*/
 	public boolean makeMoveIfVaild(int x, int y, Player player) {
 		if (board.isIn(x, y) /* pozostale checkery czy mozna zrobic ruch) */) {
 			board.playStone(x, y, player);
@@ -57,7 +61,8 @@ public class Mediator {
 		} else
 			return false;
 	}
-
+	
+	/** main class method responsible for "keeping game on" until both players agree to pass*/
 	public void start() {
 		String input = new String();
 		boolean stop = false;

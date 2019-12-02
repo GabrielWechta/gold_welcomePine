@@ -63,7 +63,6 @@ public class Intersection {
 		int yTable[] = { 0, -1, 0, 1 };
 		int newX;
 		int newY;
-		System.out.println(emptyNeighbors.toString());
 		for (int i = 0; i < xTable.length; i++) {
 			newX = this.x + xTable[i];
 			newY = this.y + yTable[i];
@@ -104,7 +103,6 @@ public class Intersection {
 		int yTable[] = { 0, -1, 0, 1 };
 		int newX;
 		int newY;
-		System.out.println(notEmptyNeighbors.toString());
 		for (int i = 0; i < xTable.length; i++) {
 			newX = this.x + xTable[i];
 			newY = this.y + yTable[i];
