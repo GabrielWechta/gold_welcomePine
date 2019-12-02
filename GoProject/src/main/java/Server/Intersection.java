@@ -15,6 +15,12 @@ public class Intersection {
             for (Intersection intersection : neighbors
             ) {
                 this.stoneChain.merge(intersection.getStoneChain());
+                stoneChain.removeLiberti(this);
+
+            }
+            for (Intersection emptyIntersection: getEmptyNeighbors()
+            ) {
+                stoneChain.addLiberti(emptyIntersection);
             }
         }
     }
@@ -95,40 +101,7 @@ public class Intersection {
 		return emptyNeighbors;
 	}
 	
-	public List<Intersection> getNotEmptyNeighbors() {
-		List<Intersection> notEmptyNeighbors = new ArrayList<Intersection>();
 
-		int xTable[] = { -1, 0, 1, 0 };
-		int yTable[] = { 0, -1, 0, 1 };
-
-		for (int i = 0; i < xTable.length; i++) {
-			int newX = this.x + xTable[i];
-			int newY = this.y + yTable[i];
-
-			if (board.isIn(newX, newY)) {
-				Intersection sharedWallIntersection = board.getIntersection(newX, newY);
-				if (sharedWallIntersection.isEmpty() == false)
-					notEmptyNeighbors.add(sharedWallIntersection);
-			}
-		}
-		return notEmptyNeighbors;
-	}
-
-	public void putToken(Player owner) {
-		setOwner(owner);
-		List<Intersection> neighbors = getNotEmptyNeighbors();
-		
-		for (Intersection intersection : neighbors) {
-		}
-		
-		new StoneChain(this, owner);
-		if (!neighbors.isEmpty()) {
-
-			for (Intersection intersection : neighbors) {
-				this.stoneChain.merge(intersection.getStoneChain());
-			}
-		}
-	}
 
     public List<Intersection> getNotEmptyNeighbors() {
         List<Intersection> notEmptyNeighbors = new ArrayList<Intersection>();
