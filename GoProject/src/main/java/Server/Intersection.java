@@ -6,6 +6,26 @@ import java.util.Set;
 
 public class Intersection {
 
+
+    public void putToken(Player owner) {
+        List<Intersection> neighbors = getNotEmptyNeighbors();
+        setOwner(owner);
+        new StoneChain(this, owner);
+        if (!neighbors.isEmpty()) {
+
+            for (Intersection intersection : neighbors
+            ) {
+                this.stoneChain.merge(intersection.getStoneChain());
+                stoneChain.removeLiberti(this);
+
+            }
+            for (Intersection emptyIntersection: getEmptyNeighbors()
+            ) {
+                stoneChain.addLiberti(emptyIntersection);
+            }
+        }
+    }
+
 	private final int x, y;
 	private StoneChain stoneChain;
 	private Player owner = null;
@@ -45,6 +65,7 @@ public class Intersection {
 		return owner;
 	}
 
+
 	public void setOwner(Player owner) {
 		this.owner = owner;
 	}
@@ -78,22 +99,6 @@ public class Intersection {
 			}
 		}
 		return emptyNeighbors;
-	}
-
-	public void putToken(Player owner) {
-		setOwner(owner);
-		List<Intersection> neighbors = getNotEmptyNeighbors();
-
-		for (Intersection intersection : neighbors) {
-		}
-
-		new StoneChain(this, owner);
-		if (!neighbors.isEmpty()) {
-
-			for (Intersection intersection : neighbors) {
-				this.stoneChain.merge(intersection.getStoneChain());
-			}
-		}
 	}
 
 	public List<Intersection> getNotEmptyNeighbors() {
