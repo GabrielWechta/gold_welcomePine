@@ -1,5 +1,10 @@
 package Server;
 
+import Exceptions.KoExeption;
+import Exceptions.OutOfBoardsBoundsException;
+import Exceptions.StoneAlreadyThereException;
+import Exceptions.SuicidalTurnExeption;
+
 public class Board {
 
 	private Intersection[][] intersections;
@@ -43,11 +48,11 @@ public class Board {
 		return intersections[x][y];
 	}
 
-	public void playStone(int x, int y, Player owner) {
+	public void playStone(int x, int y, Player owner) throws StoneAlreadyThereException, KoExeption, SuicidalTurnExeption, OutOfBoardsBoundsException {
 		if (isIn(x, y))
 			intersections[x][y].putToken(owner);
 		else
-			System.out.println("OutOfBands");
+			throw new OutOfBoardsBoundsException();
 	}
 
 	public void showBoard() {

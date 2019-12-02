@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import Exceptions.KoExeption;
+import Exceptions.OutOfBoardsBoundsException;
+import Exceptions.StoneAlreadyThereException;
+import Exceptions.SuicidalTurnExeption;
 import Server.Board;
 import Server.Player;
 
@@ -56,7 +60,17 @@ public class Mediator {
 	/** to be filled*/
 	public boolean makeMoveIfVaild(int x, int y, Player player) {
 		if (board.isIn(x, y) /* pozostale checkery czy mozna zrobic ruch) */) {
-			board.playStone(x, y, player);
+			try {
+				board.playStone(x, y, player);
+			} catch (StoneAlreadyThereException e) {
+				e.printStackTrace();
+			} catch (KoExeption koExeption) {
+				koExeption.printStackTrace();
+			} catch (SuicidalTurnExeption suicidalTurnExeption) {
+				suicidalTurnExeption.printStackTrace();
+			} catch (OutOfBoardsBoundsException e) {
+				e.printStackTrace();
+			}
 			return true;
 		} else
 			return false;
