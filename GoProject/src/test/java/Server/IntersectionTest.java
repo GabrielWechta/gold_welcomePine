@@ -28,13 +28,6 @@ class IntersectionTest {
 
     }
 
-    @org.junit.jupiter.api.Test
-    void getStoneChain() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void setStoneChain() {
-    }
 
     @org.junit.jupiter.api.Test
     void getX() {
