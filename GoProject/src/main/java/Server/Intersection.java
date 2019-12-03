@@ -6,7 +6,6 @@ import Exceptions.SuicidalTurnExeption;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Intersection {
 
@@ -25,16 +24,25 @@ public class Intersection {
 
                 for (Intersection intersection : neighbors
                 ) {
-                    this.stoneChain.merge(intersection.getStoneChain());
                     stoneChain.removeLiberti(this);
+                    if (intersection.getOwner() != owner) {
+                        intersection.tryToKill(owner);
+                    } else {
+                        this.stoneChain.merge(intersection.getStoneChain());
+                    }
 
                 }
+
                 for (Intersection emptyIntersection : getEmptyNeighbors()
                 ) {
                     stoneChain.addLiberti(emptyIntersection);
                 }
             }
         }
+    }
+
+    private void tryToKill(Player owner) {
+        stoneChain.tryToKill(owner);
     }
 
     private final int x, y;
@@ -149,12 +157,11 @@ public class Intersection {
                 if (neighbor.getOwner() == player) {
                     isSuicidal = true;
                 } else {
-                	if(neighbor.getChainStonesCount()==1) {
-						if (player.wasInKo()){
-							throw new KoExeption();
-						}
-
-					}
+                    if (neighbor.getChainStonesCount() == 1) {
+                        if (player.wasInKo()) {
+                            throw new KoExeption();
+                        }
+                    }
                     isKilling = true;
                 }
             }
@@ -162,8 +169,17 @@ public class Intersection {
 
         return (!isKilling) && (isSuicidal);
     }
-	int getChainStonesCount() {
-		return stoneChain.getStoneNumber();
-	}
 
+    int getChainStonesCount() {
+        return stoneChain.getStoneNumber();
+    }
+
+    public void die() {
+        setOwner(null);
+        for (Intersection intersection : getNotEmptyNeighbors()
+        ) {
+            intersection.getStoneChain().addLiberti(this);
+        }
+        setStoneChain(null);
+    }
 }

@@ -43,12 +43,15 @@ public class StoneChain {
     public Set<Intersection> getStones() {
         return stones;
     }
+
     public Set<Intersection> getLiberties() {
         return liberties;
     }
+
     public void addLiberti(Intersection intersection) {
         liberties.add(intersection);
     }
+
     public void removeLiberti(Intersection intersection) {
         liberties.remove(intersection);
     }
@@ -59,5 +62,29 @@ public class StoneChain {
 
     public int getStoneNumber() {
         return stones.size();
+    }
+
+    public void tryToKill(Player owner) {
+        if (getLibertiesNumber() == 0) {
+            if(getStoneNumber()==1)
+            {
+                owner.setWasInKo(true);
+            }
+            else
+            {
+                owner.setWasInKo(false);
+            }
+            die();
+
+        }
+    }
+
+    private void die() {
+        for (Intersection intersection:stones
+             ) {
+            stones.remove(intersection);
+            intersection.die();
+        }
+
     }
 }
