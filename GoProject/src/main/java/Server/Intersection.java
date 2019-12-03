@@ -16,7 +16,7 @@ public class Intersection {
         else if (isSuicidal(owner)) {
             throw new SuicidalTurnExeption();
         } else {
-
+            owner.setWasInKo(false);
             List<Intersection> neighbors = getNotEmptyNeighbors();
             setOwner(owner);
             new StoneChain(this, owner);
@@ -24,7 +24,7 @@ public class Intersection {
 
                 for (Intersection intersection : neighbors
                 ) {
-                    stoneChain.removeLiberti(this);
+                    intersection.removeLiberti(this);
                     if (intersection.getOwner() != owner) {
                         intersection.tryToKill(owner);
                     } else {
@@ -33,12 +33,19 @@ public class Intersection {
 
                 }
 
+
                 for (Intersection emptyIntersection : getEmptyNeighbors()
                 ) {
                     stoneChain.addLiberti(emptyIntersection);
                 }
             }
+            if(getChainLibertiesCount()!=1)
+            {owner.setWasInKo(false);}
         }
+    }
+
+    private void removeLiberti(Intersection intersection) {
+        stoneChain.removeLiberti(intersection);
     }
 
     private void tryToKill(Player owner) {
@@ -150,7 +157,7 @@ public class Intersection {
 
     boolean isSuicidal(Player player) throws KoExeption {
         boolean isKilling = false;
-        boolean isSuicidal = false;
+        boolean isSuicidal = getEmptyNeighbors().isEmpty();
         for (Intersection neighbor : getNotEmptyNeighbors()
         ) {
             if (neighbor.getChainLibertiesCount() == 1) {
