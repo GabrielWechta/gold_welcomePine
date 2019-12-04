@@ -70,10 +70,6 @@ public class StoneChain {
             {
                 owner.setWasInKo(true);
             }
-            else
-            {
-                owner.setWasInKo(false);
-            }
             die();
 
         }
