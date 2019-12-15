@@ -8,17 +8,15 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
-import Server.Board;
-import Server.Player;
 
-public class Mediator {
+public class Game {
 	private Player playerB;
 	private Player playerW;
 	private Board board;
-	private char turn = 'B';
+	private char turn = 'B';																																						 
 
 	/** used when we are ready to start the game */
-	public Mediator(Player playerB, Player playerW, Board board) { 
+	public Game(Player playerB, Player playerW, Board board) {
 		this.playerB = playerB;
 		this.playerW = playerW;
 		this.board = board;

@@ -9,12 +9,12 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
+import GameMaster.Game;
 import org.junit.Test;
 
 import GameMaster.ScoreHandler;
-import Server.Board;
-import Server.Intersection;
-import Server.Player;
+import GameMaster.Board;
+import GameMaster.Intersection;
 
 public class ScoreHandlerTest {
 
@@ -23,7 +23,7 @@ public class ScoreHandlerTest {
 		Board board = new Board(9);
 		ScoreHandler scoreHandler = new ScoreHandler(board);
 
-		Player playerB = new Player(1, board);
+		Game.Player playerB = new Game.Player(1, board);
 
 		try {
 			playerB.playStone(2, 0);
@@ -55,7 +55,7 @@ public class ScoreHandlerTest {
 		Board board = new Board(9);
 		ScoreHandler scoreHandler = new ScoreHandler(board);
 
-		Player playerW = new Player(2, board);
+		Game.Player playerW = new Game.Player(2, board);
 
 		try {
 			playerW.playStone(3, 3);
@@ -86,8 +86,8 @@ public class ScoreHandlerTest {
 		Board board = new Board(9);
 		ScoreHandler scoreHandler = new ScoreHandler(board);
 
-		Player playerB = new Player(1, board);
-		Player playerW = new Player(2, board);
+		Game.Player playerB = new Game.Player(1, board);
+		Game.Player playerW = new Game.Player(2, board);
 
 		try {
 			playerW.playStone(3, 3);
@@ -136,8 +136,8 @@ public class ScoreHandlerTest {
 		Board board = new Board(9);
 		ScoreHandler scoreHandler = new ScoreHandler(board);
 
-		Player playerB = new Player(1, board);
-		Player playerW = new Player(2, board);
+		Game.Player playerB = new Game.Player(1, board);
+		Game.Player playerW = new Game.Player(2, board);
 
 		try {
 			playerW.playStone(3, 3);

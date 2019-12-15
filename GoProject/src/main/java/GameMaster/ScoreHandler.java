@@ -3,10 +3,6 @@ package GameMaster;
 import java.util.HashSet;
 import java.util.Set;
 
-import Server.Board;
-import Server.Intersection;
-import Server.Player;
-
 public class ScoreHandler {
 	private int scoreB = 0;
 	private int scoreW = 0;

@@ -4,6 +4,9 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
+import GameMaster.Board;
+import GameMaster.Game;
+import GameMaster.Intersection;
 
 import java.util.List;
 
@@ -12,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class IntersectionTest {
 
     Board board;
-    Player f;
-    Player s;
+    Game.Player f;
+    Game.Player s;
 
 
     @org.junit.jupiter.api.BeforeEach
@@ -22,8 +25,8 @@ class IntersectionTest {
 
         board.showBoard();
 
-        f = new Player(1, board);
-        s = new Player(2, board);
+        f = new Game.Player(1, board);
+        s = new Game.Player(2, board);
 
 
     }
