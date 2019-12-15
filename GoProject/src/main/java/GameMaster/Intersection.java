@@ -1,4 +1,4 @@
-package Server;
+package GameMaster;
 
 import Exceptions.KoExeption;
 import Exceptions.StoneAlreadyThereException;

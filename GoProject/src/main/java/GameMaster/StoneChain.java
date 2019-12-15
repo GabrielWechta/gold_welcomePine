@@ -1,4 +1,4 @@
-package Server;
+package GameMaster;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
-package Server;
-
-import GameMaster.Mediator;
+import GameMaster.Game;
+import GameMaster.Board;
+import GameMaster.Player;
 
 public class ApplicationClass {
 
@@ -8,10 +8,10 @@ public class ApplicationClass {
 		Player playerB = new Player(1);
 		Player playerW = new Player(2);
 		Board board = new Board(9);
-		Mediator mediator = new Mediator(playerB, playerW, board);
+		Game game = new Game(playerB, playerW, board);
 		
 		
-		mediator.start();
+		game.start();
 		
 	}
 

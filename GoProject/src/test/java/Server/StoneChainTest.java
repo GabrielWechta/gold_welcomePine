@@ -4,7 +4,8 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
-import org.junit.jupiter.api.BeforeEach;
+import GameMaster.Board;
+import GameMaster.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
