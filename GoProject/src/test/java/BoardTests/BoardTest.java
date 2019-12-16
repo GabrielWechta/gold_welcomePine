@@ -7,11 +7,10 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
-import GameMaster.Game;
-import org.junit.Test;
-
 import GameMaster.Board;
+import GameMaster.Player;
 import GameMaster.StoneChain;
+import org.junit.Test;
 
 public class BoardTest {
 
@@ -34,7 +33,7 @@ public class BoardTest {
 	public void TestBasicInsertion() {
 		Board board = new Board(6);
 
-		Game.Player playerB = new Game.Player(1, board);
+		Player playerB = new Player(1, board);
 
 		try {
 			playerB.playStone(0, 0);
@@ -61,7 +60,7 @@ public class BoardTest {
 	public void TestChainMerging() {
 		Board board = new Board(6);
 
-		Game.Player playerB = new Game.Player(1, board);
+		Player playerB = new Player(1, board);
 
 
 		try {

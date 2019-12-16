@@ -31,7 +31,7 @@ public class Player {
 		this.color = color;
 	}
 
-	boolean wasInKo()
+	public boolean wasInKo()
 	{
 		return wasInKoLastTurn;
 	}
