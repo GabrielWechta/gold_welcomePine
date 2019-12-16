@@ -1,31 +1,34 @@
 package Server;
 
-import GameMaster.Game;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.net.ServerSocket;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
 public class ServerConnector {
-    Interpreter interpreter;
+    ServerGameBridge bridge;
     Connection black;
     Connection white;
-
-    void setInterpreter(Interpreter interpreter) {
-
+private ExecutorService pool;
+    void setServerBridge( ServerGameBridge bridge) {
+        this.bridge = bridge;
     }
 
     void initiateConnection() throws IOException {
 
         try (var listener = new ServerSocket(58901)) {
             System.out.println("Go Server is Running...");
-            var pool = Executors.newFixedThreadPool(200);
-            pool.execute(this.new Connection(listener.accept(), 'b'));
-            pool.execute(this.new Connection(listener.accept(), 'w'));
+             pool = Executors.newFixedThreadPool(200);
+            black =this.new Connection(listener.accept(), 'b');
+            black.setup();
+            black.send("ib");
+            white =this.new Connection(listener.accept(), 'w');
+            black.processCommands();
+
 
         }
     }
@@ -37,6 +40,12 @@ public class ServerConnector {
     void sendToWhite(String command) {
         white.send(command);
     }
+
+    public void connectSecondPlayer(int boardSize) throws IOException {
+        white.setup();
+        white.send("iw"+boardSize);
+        pool .execute(black);
+pool.execute(white);}
 
     class Connection implements Runnable {
         char color;
@@ -66,27 +75,23 @@ public class ServerConnector {
         }
 
         void send(String command) {
+            System.out.println("Sent:"+command);
             output.println(command);
         }
 
         private void setup() throws IOException {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-
-            if (color == 'b') {
-                output.println("b");
-            } else {
-                output.println("w");
-            }
         }
 
         private void processCommands() {
             while (input.hasNextLine()) {
                 var command = input.nextLine();
+                System.out.println("Got:" + command);
                 if (command.startsWith("q")) {
                     return;
                 } else
-                    interpreter.execute(command);
+                    bridge.execute(command);
             }
         }
     }

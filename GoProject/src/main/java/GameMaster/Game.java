@@ -21,6 +21,12 @@ public class Game {
 		this.playerW = playerW;
 		this.board = board;
 	}
+	public Game(int size) {
+		this.board = new Board(size);
+		this.playerB = new Player('b',board);
+		this.playerW = new Player('w',board);
+
+	}
 
 	/** if put insight while() should start only after everybody connects */
 	public boolean ifReadyStart() {

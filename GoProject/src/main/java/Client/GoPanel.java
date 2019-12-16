@@ -1,4 +1,4 @@
-package recalling.recallingSwing;
+package Client;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,17 +14,18 @@ public class GoPanel extends JPanel {
 	Square[][] board;
 	boolean whiteToMove;
 	int dimension;
-	ClientServerBridge clientServerBridge;
+	GuiFacade guiFacade;
 
-	GoPanel(int dimension, ClientServerBridge clientServerBridge) {
+
+	public GoPanel(GuiFacade guiFacade) {
+		this.dimension = guiFacade.getBoardSize();
+		this.guiFacade = guiFacade;
 		board = new Square[dimension][dimension];
 		whiteToMove = false;
-		this.dimension = dimension;
-		this.clientServerBridge = clientServerBridge;
-		initBoard(dimension);
+		initBoard();
 	}
 
-	private void initBoard(int dimension) {
+	private void initBoard() {
 		super.setLayout(new GridLayout(dimension, dimension));
 		for (int row = 0; row < dimension; row++) {
 			for (int col = 0; col < dimension; col++) {
@@ -36,7 +37,7 @@ public class GoPanel extends JPanel {
 	}
 
 	private void refreshBoard() {
-		int[][] codedBoard = clientServerBridge.getCodedBoard();
+		int[][] codedBoard = guiFacade.getCodedBoard();
 		for (int row = 0; row < dimension; row++) {
 			for (int col = 0; col < dimension; col++) {
 				switch (codedBoard[row][col]) {
@@ -77,10 +78,8 @@ public class GoPanel extends JPanel {
 				public void mouseClicked(MouseEvent me) {
 					if (stone != Stone.NONE)
 						return;
-					clientServerBridge.sendCoordinates(row, col);
-					if (clientServerBridge.receive() == true) {
-						refreshBoard();
-					}
+					guiFacade.sendTurn(row, col);
+					refreshBoard();
 					stone = whiteToMove ? Stone.WHITE : Stone.BLACK;
 					whiteToMove = !whiteToMove;
 					repaint();

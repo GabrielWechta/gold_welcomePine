@@ -1,6 +1,4 @@
-package Server;
-
-import Server.Interpreter;
+package Client;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -14,12 +12,12 @@ public class ClientConnector {
     private Socket socket;
     private Scanner input;
     private PrintWriter output;
-    Interpreter interpreter;
+    ClientServerBridge bridge;
 
-    void setInterpreter(Interpreter interpreter)
-    {
-     this.interpreter = interpreter;
+    void setBridge(ClientServerBridge bridge) {
+        this.bridge = bridge;
     }
+
     public ClientConnector(String serverAddress) throws Exception {
 
         socket = new Socket(serverAddress, 58901);
@@ -50,15 +48,16 @@ public class ClientConnector {
         output = new PrintWriter(socket.getOutputStream(), true);
     }
 
-   void send(String command)
-    {
-     output.println(command);
+    void send(String command) {
+        System.out.println("Sent:" + command);
+        output.println(command);
     }
 
     private void processCommands() {
         while (input.hasNextLine()) {
             var command = input.nextLine();
-            interpreter.execute(command);
+            System.out.println("Got:" + command);
+            bridge.execute(command);
         }
     }
 }

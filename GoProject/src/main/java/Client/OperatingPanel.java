@@ -15,10 +15,11 @@ public class OperatingPanel extends JPanel{
 	Button giveUpButton;
 	Button passButton;
 	JLabel colorLabel;
-	
-	public OperatingPanel(ClientServerBridge clientServerBridge) {
+
+
+	public OperatingPanel(GuiFacade guiFacade) {
 		colorLabel = new JLabel();
-		if(clientServerBridge.getPlayerColor() == 1 ) {
+		if(guiFacade.getPlayerColor() == 'b' ) {
 			colorLabel.setText("Black");
 		} else {
 			colorLabel.setText("White");
@@ -27,21 +28,21 @@ public class OperatingPanel extends JPanel{
 		colorLabel.setFont(colorLabel.getFont().deriveFont(64.0f));
 		colorLabel.setVerticalAlignment(SwingConstants.CENTER);
 		colorLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		passButton = new Button("Pass");
 		passButton.addActionListener(e -> {
-			clientServerBridge.pass();
+			guiFacade.pass();
 		});
-		
+
 		giveUpButton = new Button("Give up");
 		giveUpButton.addActionListener(e -> {
-			clientServerBridge.giveUp();
+			guiFacade.giveUp();
 		});
-		
+
 		setLayout(new GridLayout(3,1));
 		add(colorLabel);
 		add(giveUpButton);
 		add(passButton);
-		
+
 	}
 }
