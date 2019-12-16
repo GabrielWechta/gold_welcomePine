@@ -1,6 +1,7 @@
 package Server;
 
 import GameMaster.Game;
+import ProjectUtils.Interpreter;
 
 public class InterpreterGameServer implements Interpreter {
     Game game;
