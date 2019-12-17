@@ -39,8 +39,9 @@ public class Intersection {
                     stoneChain.addLiberti(emptyIntersection);
                 }
             }
-            if(getChainLibertiesCount()!=1)
-            {owner.setWasInKo(false);}
+            if (getChainLibertiesCount() != 1) {
+                owner.setWasInKo(false);
+            }
         }
     }
 
@@ -162,7 +163,6 @@ public class Intersection {
         ) {
             if (neighbor.getChainLibertiesCount() == 1) {
                 if (neighbor.getOwner() == player) {
-                    isSuicidal = true;
                 } else {
                     if (neighbor.getChainStonesCount() == 1) {
                         if (player.wasInKo()) {
@@ -171,7 +171,11 @@ public class Intersection {
                     }
                     isKilling = true;
                 }
+            } else if (neighbor.getOwner() == player) {
+                isSuicidal = false;
+
             }
+
         }
 
         return (!isKilling) && (isSuicidal);
@@ -188,5 +192,14 @@ public class Intersection {
             intersection.getStoneChain().addLiberti(this);
         }
         setStoneChain(null);
+    }
+
+    public int getOwnerNumber() {
+        if (owner == null)
+            return 0;
+        if (owner.getColor() == 'b')
+            return 1;
+        else
+            return 2;
     }
 }

@@ -21,7 +21,7 @@ public class ClientServerBridge {
     }
 
     public void sendTurn(int row, int col) {
-        connection.send("t"+row+"t"+col);
+        connection.send("t" + row + "t" + col);
     }
 
 
@@ -51,17 +51,21 @@ public class ClientServerBridge {
         switch (command.charAt(0)) {
             case 'i':
                 char color = command.charAt(1);
-
-
                 if (color == 'w') {
                     initialize(color, Integer.parseInt(command.substring(2)));
                 } else {
                     initialize(color);
                 }
-
-
                 break;
-
+            case 't':
+                String[] args = command.split("t");
+                String[] subargs;
+                for (int i = 1; i < args.length; i++) {
+                    subargs = args[i].split(":");
+                    gui.updateField(Integer.parseInt(subargs[0]), Integer.parseInt(subargs[1]), Integer.parseInt(subargs[2]));
+                }
+                gui.updateGui();
+                break;
 
         }
     }
