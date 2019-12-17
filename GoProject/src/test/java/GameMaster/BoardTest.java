@@ -1,4 +1,4 @@
-package BoardTests;
+package GameMaster;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +15,17 @@ import org.junit.Test;
 public class BoardTest {
 
 	@Test
+	public void TestBoardBasicBasics() {
+		Board board = new Board(9);
+		assertEquals(9, board.getBoardSize());
+
+		int[][] fieldState = board.getFieldState();
+
+		assertEquals(0, fieldState[0][0]);
+
+	}
+
+	@Test
 	public void TestBoardBasics() {
 		Board board = new Board(9);
 
@@ -28,6 +39,18 @@ public class BoardTest {
 		assertEquals(false, board.isIn(0, 10));
 
 	}
+
+	@Test
+	public void TestBoardShowing() {
+		Board board = new Board(9);
+		board.showBoard();
+
+		int[][] fieldState = board.getFieldState();
+
+		assertEquals(0, fieldState[0][0]);
+
+	}
+	
 
 	@Test
 	public void TestBasicInsertion() {
@@ -50,7 +73,6 @@ public class BoardTest {
 			e.printStackTrace();
 		}
 
-
 		// board.showBoard();
 
 		assertEquals(1, board.getIntersection(0, 0).getOwner().getColor());
@@ -62,14 +84,12 @@ public class BoardTest {
 
 		Player playerB = new Player(1, board);
 
-
 		try {
 			playerB.playStone(0, 1);
 			playerB.playStone(0, 0);
 			playerB.playStone(1, 0);
 			playerB.playStone(2, 0);
 		} catch (OutOfBoardsBoundsException e) {
-
 
 		} catch (KoExeption koExeption) {
 			koExeption.printStackTrace();
@@ -79,7 +99,6 @@ public class BoardTest {
 			e.printStackTrace();
 		}
 
-		
 		StoneChain temp = board.getIntersection(0, 0).getStoneChain();
 		assertEquals(temp, board.getIntersection(0, 0).getStoneChain());
 
@@ -111,7 +130,7 @@ public class BoardTest {
 		}
 
 		assertEquals(board.getIntersection(0, 0).getStoneChain(), board.getIntersection(2, 2).getStoneChain());
-		
-		//board.showBoard();
+
+		// board.showBoard();
 	}
 }

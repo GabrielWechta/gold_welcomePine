@@ -1,4 +1,4 @@
-package Server;
+package GameMaster;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,7 +15,7 @@ import GameMaster.Board;
 import GameMaster.Intersection;
 import GameMaster.Player;
 
-class IntersectionTest {
+public class IntersectionTest {
 
     Board board;
     Player f;
@@ -23,8 +23,8 @@ class IntersectionTest {
 
 
     @Before
-    void setUp() {
-        board = new Board(6);
+    public void setUp() {
+        board = new Board(9);
 
         board.showBoard();
 
@@ -36,7 +36,7 @@ class IntersectionTest {
 
 
     @Test
-    void getX() {
+    public void getX() {
         try {
             f.playStone(1,1);
         } catch (OutOfBoardsBoundsException e) {
@@ -53,7 +53,7 @@ class IntersectionTest {
     }
 
     @Test
-    void getY() {
+    public void getY() {
         try {
             f.playStone(1,1);
         } catch (OutOfBoardsBoundsException e) {
@@ -69,7 +69,7 @@ class IntersectionTest {
     }
 
     @Test
-    void getOwner() {
+    public void getOwner() {
         try {
             f.playStone(1,1);
             s.playStone(2,2);
@@ -92,7 +92,7 @@ class IntersectionTest {
     }
 
     @Test
-    void putToken() {
+    public void putToken() {
 
         try {
             board.getIntersection(1,1).putToken(f);
@@ -107,7 +107,7 @@ class IntersectionTest {
     }
 
     @Test
-    void getEmptyNeighbors() {
+    public void getEmptyNeighbors() {
         try {
             f.playStone(1,1);
             f.playStone(1,2);
@@ -127,7 +127,7 @@ class IntersectionTest {
         assertTrue(emptySpaces.contains(board.getIntersection(0,2)));
     }
     @Test
-    void getNotEmptyNeighbors() {
+    public void getNotEmptyNeighbors() {
         try {
             f.playStone(0,0);
             f.playStone(1,0);

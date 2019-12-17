@@ -1,5 +1,7 @@
 package Client;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 public class GuiFacadeTest {
@@ -8,6 +10,7 @@ public class GuiFacadeTest {
 	public void testingDispalyingPassPopUp() {
 		GuiFacade guiFacade = new GuiFacade();
 		guiFacade.displayPass();
+		assertTrue(true);
 	}
 	@Test
 	public void testingDispalyingQuitPopUp() {
