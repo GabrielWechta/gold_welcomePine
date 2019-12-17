@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class GoPanel extends JPanel {
 
-	Square[][] board;
-	boolean whiteToMove;
-	int dimension;
-	GuiFacade guiFacade;
+	private Square[][] board;
+	private boolean whiteToMove;
+	private int dimension;
+	private GuiFacade guiFacade;
 
 
 	public GoPanel(GuiFacade guiFacade) {

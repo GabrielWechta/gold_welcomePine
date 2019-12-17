@@ -64,11 +64,11 @@ public class StoneChain {
         return stones.size();
     }
 
-    public void tryToKill(Player owner) {
+    public void tryToKill(Player killer) {
         if (getLibertiesNumber() == 0) {
             if(getStoneNumber()==1)
             {
-                owner.setWasInKo(true);
+                killer.setWasInKo(true);
             }
             die();
 
@@ -78,7 +78,6 @@ public class StoneChain {
     private void die() {
         for (Intersection intersection:stones
              ) {
-            stones.remove(intersection);
             intersection.die();
         }
 

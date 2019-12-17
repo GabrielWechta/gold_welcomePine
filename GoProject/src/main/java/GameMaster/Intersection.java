@@ -9,6 +9,10 @@ import java.util.List;
 
 public class Intersection {
 
+    private final int x, y;
+    private StoneChain stoneChain;
+    private Player owner = null;
+    private Board board;
 
     public void putToken(Player owner) throws StoneAlreadyThereException, KoExeption, SuicidalTurnExeption {
         if (getOwner() != null)
@@ -48,15 +52,10 @@ public class Intersection {
     private void removeLiberti(Intersection intersection) {
         stoneChain.removeLiberti(intersection);
     }
-
-    private void tryToKill(Player owner) {
-        stoneChain.tryToKill(owner);
+    private void tryToKill(Player killer) {
+        stoneChain.tryToKill(killer);
     }
 
-    private final int x, y;
-    private StoneChain stoneChain;
-    private Player owner = null;
-    private Board board;
 
     // regular constructor
     public Intersection(int x, int y, StoneChain stoneChain, Board board) {
@@ -164,12 +163,13 @@ public class Intersection {
             if (neighbor.getChainLibertiesCount() == 1) {
                 if (neighbor.getOwner() == player) {
                 } else {
+                    isKilling = true;
                     if (neighbor.getChainStonesCount() == 1) {
                         if (player.wasInKo()) {
                             throw new KoExeption();
                         }
                     }
-                    isKilling = true;
+
                 }
             } else if (neighbor.getOwner() == player) {
                 isSuicidal = false;

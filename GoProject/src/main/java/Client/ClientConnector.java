@@ -1,6 +1,7 @@
 package Client;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -9,27 +10,36 @@ import java.util.concurrent.Executors;
 public class ClientConnector {
 
 
-    private Socket socket;
+    private Socket socket = null;
     private Scanner input;
     private PrintWriter output;
-    ClientServerBridge bridge;
+    private ClientServerBridge bridge;
 
     void setBridge(ClientServerBridge bridge) {
         this.bridge = bridge;
     }
 
-    public ClientConnector(String serverAddress) throws Exception {
+    public ClientConnector(String serverAddress) {
+        System.out.println("Waiting for serwer...");
+        while (socket == null) {
+            try {
+                socket = new Socket(serverAddress, 58901);
+            } catch (UnknownHostException e) {
+            } catch (IOException e) {
+            }
 
-        socket = new Socket(serverAddress, 58901);
-
-
+        }
+        try {
+            setup();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void initializeConnection() {
         var pool = Executors.newFixedThreadPool(200);
         Runnable serverOutputProcessing = () -> {
             try {
-                setup();
                 processCommands();
             } catch (Exception e) {
                 e.printStackTrace();
