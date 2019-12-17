@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ServerGameBridge {
     private Game game = null;
-    private ServerConnector connector = null;
+    private ServerConnector connector;
 
 
     ServerGameBridge(ServerConnector connector) throws IOException {
@@ -19,12 +19,17 @@ public class ServerGameBridge {
 
     void initiateGame(int dimention) {
         if (game == null) {
-            this.game = new Game(dimention,this);
+            this.game = new Game(dimention, this);
         }
     }
 
     synchronized public void execute(String command, char color) {
-
+        ServerConnector.Connection otherPlayer;
+        String[] args;
+        if (color == 'b')
+            otherPlayer = connector.getWhitePlayerConnection();
+        else
+            otherPlayer = connector.getBlackPlayerConnection();
         switch (command.charAt(0)) {
             case 'i':
                 int boardSize = Integer.parseInt(command.substring(1));
@@ -37,14 +42,38 @@ public class ServerGameBridge {
                 break;
 
             case 't':
-                String[] args = command.split("t");
-                tryToPlay(Integer.parseInt(args[1]), Integer.parseInt(args[2]),game.getPlayer(color));
+                args = command.split("t");
+                tryToPlay(Integer.parseInt(args[1]), Integer.parseInt(args[2]), game.getPlayer(color));
                 break;
             case 'q':
+                otherPlayer.send("q");
                 break;
             case 'g':
+                otherPlayer.send("g");
                 break;
             case 'p':
+                otherPlayer.send("p");
+                game.pass();
+                break;
+            case 'c':
+                args = command.split("c");
+                String[] subargs;
+
+                for (int i = 1; i < args.length; i++) {
+                    subargs = args[i].split(":");
+                    game.addClaim(color, Integer.parseInt(subargs[1]), Integer.parseInt(subargs[2]),Integer.parseInt(subargs[3]));
+                }
+                if (game.claimsAreDone()) {
+                    if (game.claimsNotContradict()) {
+                       int  blackScore = game.finalScore('b');
+                      int   whiteScore = game.finalScore('w');
+                      char winner = blackScore>whiteScore ? 'b':'w';
+                      connector.send("r"+"1"+winner);
+                    } else {
+                        connector.send("r"+"1");
+                    }
+
+                }
                 break;
 
 
@@ -59,7 +88,8 @@ public class ServerGameBridge {
             connection = connector.getWhitePlayerConnection();
         }
         try {
-           game.makeMoveIfVaild(x,y,player);
+            game.makeMoveIfVaild(x, y, player);
+            sendFieldState();
         } catch (OutOfBoardsBoundsException e) {
             connection.send("b");
         } catch (KoExeption koExeption) {
@@ -68,36 +98,16 @@ public class ServerGameBridge {
             connection.send("s");
         } catch (StoneAlreadyThereException e) {
             connection.send("o");
-        }catch (NotYourTurnExeption notYourTurnExeption) {
+        } catch (NotYourTurnExeption notYourTurnExeption) {
             connection.send("n");
         }
-        sendFieldState();
-    }
-
-    public void sendGiveUp(char player) {
 
     }
-
-
-    public void sendPass(char player) {
-
-    }
-
-
-    public void sendQuit(char player) {
-
-    }
-
-
-    public void sendException(char player, Exception exception) {
-
-    }
-
 
     public void sendFieldState() {
         int[][] field = game.getFieldState();
         int size = field.length;
-        var com = new  StringBuilder();
+        StringBuilder com = new StringBuilder();
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++) {
                 com.append('t');
@@ -107,8 +117,12 @@ public class ServerGameBridge {
                 com.append(':');
                 com.append(field[i][j]);
             }
-        var command = com.toString();
-        connector.getBlackPlayerConnection().send(command);
-        connector.getWhitePlayerConnection().send(command);
+        String command = com.toString();
+        connector.send(command);
+
+    }
+
+    public void endGame() {
+        connector.send("e");
     }
 }

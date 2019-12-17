@@ -40,8 +40,8 @@ public class ClientServerBridge {
     }
 
     public void quit() {
-        // sending 'giveUp' command to server
-        // it has to be handled by class Mediator
+        //todo
+        //add quit handler to window
         connection.send("q");
 
     }
@@ -66,11 +66,49 @@ public class ClientServerBridge {
                 }
                 gui.updateGui();
                 break;
+            case 'p':
+                gui.displayPass();
+                break;
+            case 'q':
+                gui.displayQuit();
+                break;
+            case 'g':
+                gui.displayEndGame(true);
+                break;
+            case 'e':
+                gui.claimTerritory();
+                break;
+            case 'r':
+                if (command.charAt(1) == 0) {
+                    gui.contGame();
+                } else {
+                   gui.displayEndGame(command.charAt(2));
+                }
+
+                break;
 
         }
     }
 
     public void initializeGame(int boardSize) {
         connection.send("i" + boardSize);
+    }
+
+    public void sendClaims(int[][] isClaimed) {
+
+        int size = isClaimed.length;
+        StringBuilder com = new StringBuilder();
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++) {
+                com.append('c');
+                com.append(i);
+                com.append(':');
+                com.append(j);
+                com.append(':');
+                com.append(isClaimed[i][j]);
+            }
+        String command = com.toString();
+        connection.send(command);
+
     }
 }

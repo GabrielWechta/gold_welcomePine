@@ -23,7 +23,7 @@ public class ServerConnector {
 
     void initiateConnection() throws IOException {
 
-        try (var listener = new ServerSocket(58901)) {
+        try (ServerSocket listener = new ServerSocket(58901)) {
             System.out.println("Go Server is Running...");
             pool = Executors.newFixedThreadPool(200);
             black = this.new Connection(listener.accept(), 'b');
@@ -49,6 +49,11 @@ public class ServerConnector {
         white.send("iw" + boardSize);
         pool.execute(black);
         pool.execute(white);
+    }
+
+    public void send(String command) {
+        white.send(command);
+        black.send(command);
     }
 
     class Connection implements Runnable {
@@ -78,7 +83,7 @@ public class ServerConnector {
         }
 
         void send(String command) {
-            System.out.println("Sent to"+color+":" + command);
+            System.out.println("Sent to" + color + ":" + command);
             output.println(command);
         }
 
@@ -93,12 +98,12 @@ public class ServerConnector {
                 try {
                     nextLine = input.hasNextLine();
                     if (nextLine) {
-                        var command = input.nextLine();
-                        System.out.println("Got from"+color+":" + command);
+                        String command = input.nextLine();
+                        System.out.println("Got from" + color + ":" + command);
+                        bridge.execute(command, color);
                         if (command.startsWith("q")) {
                             return;
-                        } else
-                            bridge.execute(command, color);
+                        }
                     }
                 } catch (Exception e) {
 

@@ -85,5 +85,37 @@ public class GuiFacade {
     {
         goPanel.refreshBoard();
     }
+
+    public void displayPass() {
+        //TODO
+    }
+
+    public void displayQuit() {
+        //TODO
+    }
+
+
+    public void claimTerritory() {
+        //todo
+    }
+   void sendClaims( int[][] isClaimed)
+    {
+        //todo
+        //change and use this to send claims to server 0 -not claimed; 1 - claimed; 2 - claimed to be neutral;
+bridge.sendClaims(isClaimed);
+    }
+
+    public void contGame() {
+        //todo
+    }
+
+    public void displayEndGame(boolean b) {
+        //todo
+        //if true display win elsedisplay defeat
+    }
+
+    public void displayEndGame(char color) {
+        displayEndGame(this.color==color);
+    }
 }
 
