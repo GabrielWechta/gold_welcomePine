@@ -13,6 +13,7 @@ public class Game {
     private Board board;
     private char turn = 'b';
     private ServerGameBridge bridge;
+    boolean pass;
 
     public Player getWhitePlayer() {
         return playerW;
@@ -84,11 +85,21 @@ public class Game {
     synchronized public boolean makeMoveIfVaild(int x, int y, Player player) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
         if (player.getColor() == turn) {
             switchTurn();
+            pass = false;
             board.playStone(x, y, player);
             return true;
 
         } else {
             throw new NotYourTurnExeption();
+        }
+    }
+
+    public void pass() {
+        switchTurn();
+        if (!pass) {
+            pass = true;
+        } else {
+            bridge.endGame();
         }
     }
 
@@ -200,6 +211,27 @@ public class Game {
     }
 
     public int[][] getFieldState() {
-        return  board.getFieldState();
+        return board.getFieldState();
+    }
+
+    public void addClaim(char color, int x, int y, int claim) {
+        if (claim != 0) {
+            if (color == 'b')
+                playerB.claim(x, y,claim );
+            else
+                playerW.claim(x, y,claim);
+        }
+    }
+
+    public boolean claimsAreDone() {
+        return !(playerW.getClaims().isEmpty() || playerB.getClaims().isEmpty());
+    }
+
+    public boolean claimsNotContradict() {
+        return playerW.getClaims().equals(playerB.getClaims());
+    }
+
+    public int finalScore(char player) {
+        return 0;//todo
     }
 }

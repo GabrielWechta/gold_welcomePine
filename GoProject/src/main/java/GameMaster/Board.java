@@ -75,11 +75,12 @@ public class Board {
     }
 
     public int[][] getFieldState() {
-        var board = new int[boardSize][boardSize];
+        int[][] board = new int[boardSize][boardSize];
         for (int i = 0; i < boardSize; i++)
             for (int j = 0; j < boardSize; j++) {
                 board[i][j] = intersections[i][j].getOwnerNumber();
             }
         return board;
     }
+
 }
