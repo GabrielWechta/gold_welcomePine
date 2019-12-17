@@ -9,6 +9,7 @@ public class GuiFacade {
     int boardSize;
     int[][] board;
     private ClientServerBridge bridge;
+    GoPanel goPanel;
 
     public GuiFacade(char color,ClientServerBridge bridge) {
         this.color = color;
@@ -24,6 +25,7 @@ public class GuiFacade {
 
     public GuiFacade(char color, int boardSize,ClientServerBridge bridge) {
         this.boardSize = boardSize;
+        this.bridge = bridge;
         this.color = color;
         System.out.println("Welcome to go game by Ivan Feofilaktov and Gabriel Wechta.");
         System.out.println("You are starting: " + boardSize + "x" + boardSize + " go game");
@@ -41,7 +43,8 @@ public class GuiFacade {
 
         JFrame gameFrame = new JFrame();
         gameFrame.setLayout(new BorderLayout());
-        gameFrame.add(new GoPanel(this), BorderLayout.CENTER);
+        goPanel =new GoPanel(this);
+        gameFrame.add(goPanel, BorderLayout.CENTER);
         gameFrame.setSize(600, 625);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setResizable(false);
@@ -73,6 +76,14 @@ public class GuiFacade {
 
     public int getBoardSize() {
         return boardSize;
+    }
+
+    public void updateField(int x, int y, int owner) {
+        board[x][y] = owner;
+    }
+    public void updateGui()
+    {
+        goPanel.refreshBoard();
     }
 }
 

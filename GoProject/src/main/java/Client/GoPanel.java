@@ -36,7 +36,7 @@ public class GoPanel extends JPanel {
 		repaint();
 	}
 
-	private void refreshBoard() {
+	void refreshBoard() {
 		int[][] codedBoard = guiFacade.getCodedBoard();
 		for (int row = 0; row < dimension; row++) {
 			for (int col = 0; col < dimension; col++) {
@@ -76,13 +76,7 @@ public class GoPanel extends JPanel {
 			super.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent me) {
-					if (stone != Stone.NONE)
-						return;
 					guiFacade.sendTurn(row, col);
-					refreshBoard();
-					stone = whiteToMove ? Stone.WHITE : Stone.BLACK;
-					whiteToMove = !whiteToMove;
-					repaint();
 				}
 			});
 		}

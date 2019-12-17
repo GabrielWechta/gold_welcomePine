@@ -1,5 +1,7 @@
 package Server;
 
+import GameMaster.Player;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -33,14 +35,12 @@ private ExecutorService pool;
         }
     }
 
-    void sendToBlack(String command) {
-        black.send(command);
+   Connection getWhitePlayerConnection(){
+        return white;
+   }
+    Connection getBlackPlayerConnection(){
+        return black;
     }
-
-    void sendToWhite(String command) {
-        white.send(command);
-    }
-
     public void connectSecondPlayer(int boardSize) throws IOException {
         white.setup();
         white.send("iw"+boardSize);
@@ -91,7 +91,7 @@ pool.execute(white);}
                 if (command.startsWith("q")) {
                     return;
                 } else
-                    bridge.execute(command);
+                    bridge.execute(command,color);
             }
         }
     }
