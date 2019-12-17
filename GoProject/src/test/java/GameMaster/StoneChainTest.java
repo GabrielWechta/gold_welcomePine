@@ -1,4 +1,4 @@
-package Server;
+package GameMaster;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,16 +9,15 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
-import GameMaster.Board;
-import GameMaster.Player;
 
-class StoneChainTest {
+
+public class StoneChainTest {
     Board board;
     Player f;
     Player s;
 
     @Before
-    void setUp() {
+    public void setUp() {
         board = new Board(6);
 
         board.showBoard();
@@ -31,11 +30,11 @@ class StoneChainTest {
 
 
     @Test
-    void getOwner() {
+    public void getOwner() {
     }
 
     @Test
-    void killTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
+    public void killTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
         f.playStone(0,0);
         s.playStone(1,0);
         s.playStone(0,1);
@@ -45,8 +44,8 @@ class StoneChainTest {
 
 
     }
-    @Test
-    void koTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
+    @Test(expected = KoExeption.class)
+    public void koTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
 
         f.playStone(1,0);
         f.playStone(0,1);
@@ -67,6 +66,7 @@ class StoneChainTest {
     }
 
     @Test
-    void getStones() {
+    public void testingMerge() {
+    	
     }
 }

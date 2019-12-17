@@ -28,14 +28,14 @@ public class Board {
      * @return method shows gameBoard where (0,0) is the most South-East point on
      * the board.
      */
-    public void showGameBoardTable() {
-        for (int y = boardSize - 1; y >= 0; y--) {
-            for (int x = 0; x < boardSize; x++) {
-                System.out.print(intersections[x][y].getOwner().getColor() + " ");
-            }
-            System.out.println();
-        }
-    }
+//    public void showGameBoardTable() {
+//        for (int y = boardSize - 1; y >= 0; y--) {
+//            for (int x = 0; x < boardSize; x++) {
+//                System.out.print(intersections[x][y].getOwner().getColor() + " ");
+//            }
+//            System.out.println();
+//        }
+//    }
 
     public boolean isIn(int x, int y) {
         if (x >= 0 && x < boardSize && y >= 0 && y < boardSize)
