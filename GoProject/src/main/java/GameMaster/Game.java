@@ -31,7 +31,7 @@ public class Game {
         this.board = board;
     }
 
-    public Game(int size,ServerGameBridge bridge) {
+    public Game(int size, ServerGameBridge bridge) {
         this.bridge = bridge;
         this.board = new Board(size);
         this.playerB = new Player('b', board);
@@ -81,18 +81,13 @@ public class Game {
     /**
      * to be filled
      */
-    public boolean makeMoveIfVaild(int x, int y, Player player) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
+    synchronized public boolean makeMoveIfVaild(int x, int y, Player player) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
         if (player.getColor() == turn) {
-            if (board.isIn(x, y) /* pozostale checkery czy mozna zrobic ruch) */) {
+            switchTurn();
+            board.playStone(x, y, player);
+            return true;
 
-                board.playStone(x, y, player);
-                switchTurn();
-                bridge.sendFieldState(board.getFieldstate());
-                return true;
-            } else
-                throw new OutOfBoardsBoundsException();
         } else {
-
             throw new NotYourTurnExeption();
         }
     }
@@ -102,7 +97,8 @@ public class Game {
             turn = 'w';
         else {
             turn = 'b';
-        } ;
+        }
+        ;
     }
 
     /**
@@ -195,10 +191,15 @@ public class Game {
 */
     }
 
-	public Player getPlayer(char color) {
-    	if (color == 'b'){
-    		return getBlackPlayer();}
-    	else {
-    		return getWhitePlayer();}
-	}
+    public Player getPlayer(char color) {
+        if (color == 'b') {
+            return getBlackPlayer();
+        } else {
+            return getWhitePlayer();
+        }
+    }
+
+    public int[][] getFieldState() {
+        return  board.getFieldState();
+    }
 }

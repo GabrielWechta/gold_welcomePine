@@ -7,12 +7,14 @@ import GameMaster.Player;
 import java.io.IOException;
 
 public class ServerGameBridge {
-    Game game = null;
-    ServerConnector connector = null;
+    private Game game = null;
+    private ServerConnector connector = null;
 
-    ServerGameBridge(ServerConnector connector) {
+
+    ServerGameBridge(ServerConnector connector) throws IOException {
         this.connector = connector;
         connector.setServerBridge(this);
+        connector.initiateConnection();
     }
 
     void initiateGame(int dimention) {
@@ -69,6 +71,7 @@ public class ServerGameBridge {
         }catch (NotYourTurnExeption notYourTurnExeption) {
             connection.send("n");
         }
+        sendFieldState();
     }
 
     public void sendGiveUp(char player) {
@@ -91,7 +94,8 @@ public class ServerGameBridge {
     }
 
 
-    public void sendFieldState(int[][] field) {
+    public void sendFieldState() {
+        int[][] field = game.getFieldState();
         int size = field.length;
         var com = new  StringBuilder();
         for (int i = 0; i < size; i++)

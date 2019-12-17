@@ -12,11 +12,12 @@ import java.util.concurrent.Executors;
 
 
 public class ServerConnector {
-    ServerGameBridge bridge;
-    Connection black;
-    Connection white;
-private ExecutorService pool;
-    void setServerBridge( ServerGameBridge bridge) {
+    private ServerGameBridge bridge;
+    private Connection black;
+    private Connection white;
+    private ExecutorService pool;
+
+    void setServerBridge(ServerGameBridge bridge) {
         this.bridge = bridge;
     }
 
@@ -24,28 +25,31 @@ private ExecutorService pool;
 
         try (var listener = new ServerSocket(58901)) {
             System.out.println("Go Server is Running...");
-             pool = Executors.newFixedThreadPool(200);
-            black =this.new Connection(listener.accept(), 'b');
+            pool = Executors.newFixedThreadPool(200);
+            black = this.new Connection(listener.accept(), 'b');
             black.setup();
             black.send("ib");
-            white =this.new Connection(listener.accept(), 'w');
+            white = this.new Connection(listener.accept(), 'w');
             black.processCommands();
 
 
         }
     }
 
-   Connection getWhitePlayerConnection(){
+    Connection getWhitePlayerConnection() {
         return white;
-   }
-    Connection getBlackPlayerConnection(){
+    }
+
+    Connection getBlackPlayerConnection() {
         return black;
     }
+
     public void connectSecondPlayer(int boardSize) throws IOException {
         white.setup();
-        white.send("iw"+boardSize);
-        pool .execute(black);
-pool.execute(white);}
+        white.send("iw" + boardSize);
+        pool.execute(black);
+        pool.execute(white);
+    }
 
     class Connection implements Runnable {
         char color;
@@ -61,7 +65,6 @@ pool.execute(white);}
         @Override
         public void run() {
             try {
-                setup();
                 processCommands();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -75,7 +78,7 @@ pool.execute(white);}
         }
 
         void send(String command) {
-            System.out.println("Sent:"+command);
+            System.out.println("Sent to"+color+":" + command);
             output.println(command);
         }
 
@@ -85,13 +88,22 @@ pool.execute(white);}
         }
 
         private void processCommands() {
-            while (input.hasNextLine()) {
-                var command = input.nextLine();
-                System.out.println("Got:" + command);
-                if (command.startsWith("q")) {
-                    return;
-                } else
-                    bridge.execute(command,color);
+            boolean nextLine;
+            while (true) {
+                try {
+                    nextLine = input.hasNextLine();
+                    if (nextLine) {
+                        var command = input.nextLine();
+                        System.out.println("Got from"+color+":" + command);
+                        if (command.startsWith("q")) {
+                            return;
+                        } else
+                            bridge.execute(command, color);
+                    }
+                } catch (Exception e) {
+
+                }
+
             }
         }
     }

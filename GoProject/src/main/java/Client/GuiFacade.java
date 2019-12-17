@@ -5,11 +5,11 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class GuiFacade {
-    char color;
-    int boardSize;
-    int[][] board;
+    private char color;
+    private int boardSize;
+    private int[][] board;
     private ClientServerBridge bridge;
-    GoPanel goPanel;
+    private GoPanel goPanel;
 
     public GuiFacade(char color,ClientServerBridge bridge) {
         this.color = color;

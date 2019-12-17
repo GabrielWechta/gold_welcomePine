@@ -1,8 +1,8 @@
 package Client;
 
 public class ClientServerBridge {
-    ClientConnector connection;
-    GuiFacade gui;
+    private ClientConnector connection;
+    private GuiFacade gui;
 
     ClientServerBridge(ClientConnector connection) {
         this.connection = connection;

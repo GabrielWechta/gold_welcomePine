@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class OperatingPanel extends JPanel{
-	
-	Button giveUpButton;
-	Button passButton;
-	JLabel colorLabel;
+
+	private Button giveUpButton;
+	private Button passButton;
+	private JLabel colorLabel;
 
 
 	public OperatingPanel(GuiFacade guiFacade) {

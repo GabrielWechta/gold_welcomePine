@@ -11,6 +11,6 @@ import javax.swing.*;
 public class Client {
 	public static void main(String[] args) throws Exception {
 		ClientConnector connection = new ClientConnector("127.0.0.1");
-		var bridge = new ClientServerBridge(connection);
+		new ClientServerBridge(connection);
 	}
 }
