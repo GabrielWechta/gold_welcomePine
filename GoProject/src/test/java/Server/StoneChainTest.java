@@ -1,22 +1,23 @@
 package Server;
 
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
 import GameMaster.Board;
 import GameMaster.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class StoneChainTest {
     Board board;
     Player f;
     Player s;
 
-    @org.junit.jupiter.api.BeforeEach
+    @Before
     void setUp() {
         board = new Board(6);
 

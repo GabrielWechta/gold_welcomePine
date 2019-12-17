@@ -1,5 +1,12 @@
 package Server;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
@@ -7,12 +14,6 @@ import Exceptions.SuicidalTurnExeption;
 import GameMaster.Board;
 import GameMaster.Intersection;
 import GameMaster.Player;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class IntersectionTest {
 
@@ -21,7 +22,7 @@ class IntersectionTest {
     Player s;
 
 
-    @BeforeEach
+    @Before
     void setUp() {
         board = new Board(6);
 
@@ -105,7 +106,7 @@ class IntersectionTest {
         assertEquals(board.getIntersection(1,1).getOwner(),f);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getEmptyNeighbors() {
         try {
             f.playStone(1,1);
