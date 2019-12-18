@@ -15,14 +15,16 @@ public class ServerBot implements PlayerConnection {
         this.size = size;
         this.random = new Random();
         if(first)tryPlayUntillValid();
-        else turnCount =1;
-
-
-
     }
 
     public void setBridge(ServerGameBridge bridge) {
         this.bridge = bridge;
+    }
+
+    @Override
+    public void makeTurn() {
+        tryPlayUntillValid();
+
     }
 
     @Override
@@ -75,7 +77,7 @@ public class ServerBot implements PlayerConnection {
             try {
                 bridge.play(x, y,this);
                 validPlay = true;
-                turnCount = 0;
+                bridge.getOpponent(this).makeTurn();
             } catch (StoneAlreadyThereException e) {
                 System.out.println("Bot is complaining about how owecrouded this fiel is");
             } catch (OutOfBoardsBoundsException e) {

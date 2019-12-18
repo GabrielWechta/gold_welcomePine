@@ -95,7 +95,7 @@ public class ServerGameBridge {
 
         try {
             play(x, y, playerConnection);
-
+            getOpponent(playerConnection).makeTurn();
         } catch (OutOfBoardsBoundsException e) {
             playerConnection.sendNotInBounds();
         } catch (KoExeption koExeption) {

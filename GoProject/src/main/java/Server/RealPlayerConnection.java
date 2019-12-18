@@ -19,6 +19,11 @@ public class RealPlayerConnection implements PlayerConnection,Runnable {
     }
 
     @Override
+    public void makeTurn() {
+
+    }
+
+    @Override
     public void sendQuit() {
         send("q");
     }
