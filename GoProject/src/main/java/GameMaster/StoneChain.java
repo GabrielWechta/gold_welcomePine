@@ -9,18 +9,11 @@ public class StoneChain {
     private Set<Intersection> liberties;
     private Player owner;
 
-
-    public StoneChain(Set<Intersection> stones, Set<Intersection> liberties, Player owner) {
-        this.stones = stones;
-        this.liberties = liberties;
-        this.owner = owner;
-    }
-
-    public StoneChain(Intersection intersection, Player owner) {
+    public StoneChain(Intersection intersection, Player player) {
         intersection.setStoneChain(this);
         this.stones = new HashSet<Intersection>();
         stones.add(intersection);
-        this.owner = owner;
+        owner = player;
         liberties = new HashSet<Intersection>();
         liberties.addAll(intersection.getEmptyNeighbors());
     }
@@ -30,13 +23,13 @@ public class StoneChain {
     }
 
     public void merge(StoneChain chain) {
-        if (chain.getOwner() == this.owner) {
+        if (chain.getOwner() == owner) {
             for (Intersection intersection :
                     chain.getStones()) {
                 intersection.setStoneChain(this);
             }
-            this.stones.addAll(chain.getStones());
-            this.liberties.addAll(chain.getLiberties());
+            stones.addAll(chain.getStones());
+            liberties.addAll(chain.getLiberties());
         }
     }
 
@@ -64,10 +57,9 @@ public class StoneChain {
         return stones.size();
     }
 
-    public void tryToKill(Player killer) {
+    public void tryToKill(RealPlayer killer) {
         if (getLibertiesNumber() == 0) {
-            if(getStoneNumber()==1)
-            {
+            if (getStoneNumber() == 1) {
                 killer.setWasInKo(true);
             }
             die();
@@ -76,8 +68,8 @@ public class StoneChain {
     }
 
     private void die() {
-        for (Intersection intersection:stones
-             ) {
+        for (Intersection intersection : stones
+        ) {
             intersection.die();
         }
 

@@ -15,8 +15,8 @@ public class ClientServerBridge {
         gui.initialize();
     }
 
-    private void initialize(char color) {
-        gui = new GuiFacade(color, this);
+    private void initialize() {
+        gui = new GuiFacade(this);
         gui.initialize();
     }
 
@@ -26,41 +26,37 @@ public class ClientServerBridge {
 
 
     public void pass() {
-        // sending 'pass' command to server
-        // it has to be handled by class Mediator
         connection.send("p");
 
     }
 
     public void giveUp() {
-        // sending 'giveUp' command to server
-        // it has to be handled by class Mediator
         connection.send("g");
 
     }
 
     public void quit() {
-        //todo
-        //add quit handler to window
         connection.send("q");
-
     }
 
 
     public void execute(String command) {
+        String[] args;
+        String[] subargs;
         switch (command.charAt(0)) {
             case 'i':
-                char color = command.charAt(1);
-                if (color == 'w') {
-                    initialize(color, Integer.parseInt(command.substring(2)));
+                if (command.equals("i")) {
+                    initialize();
                 } else {
-                    initialize(color);
+                    args = command.split(":");
+                    initialize(args[1].charAt(0), Integer.parseInt(args[2]));
                 }
                 break;
             case 't':
-                String[] args = command.split("t");
-                String[] subargs;
-                for (int i = 1; i < args.length; i++) {
+                args = command.split("t");
+                for (
+                        int i = 1;
+                        i < args.length; i++) {
                     subargs = args[i].split(":");
                     gui.updateField(Integer.parseInt(subargs[0]), Integer.parseInt(subargs[1]), Integer.parseInt(subargs[2]));
                 }
@@ -76,22 +72,18 @@ public class ClientServerBridge {
                 gui.displayEndGame(true);
                 break;
             case 'e':
-                gui.claimTerritory();
+                gui.displayEndGame(command.charAt(1));
                 break;
             case 'r':
-                if (command.charAt(1) == 0) {
-                    gui.contGame();
-                } else {
-                   gui.displayEndGame(command.charAt(2));
-                }
-
+                gui.displayEndGame(command.charAt(2));
                 break;
 
         }
+
     }
 
-    public void initializeGame(int boardSize) {
-        connection.send("i" + boardSize);
+    public void initializeGame(int boardSize, char color, int bots) {
+        connection.send("i" + boardSize + ":" + color + ":" + bots);
     }
 
     public void sendClaims(int[][] isClaimed) {

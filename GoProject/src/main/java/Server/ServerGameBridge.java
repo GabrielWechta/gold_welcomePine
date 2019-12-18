@@ -1,61 +1,61 @@
 package Server;
 
 import Exceptions.*;
-import GameMaster.Game;
-import GameMaster.Player;
+import GameMaster.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ServerGameBridge {
-    private Game game = null;
-    private ServerConnector connector;
+
+    ArrayList<PlayerConnection> observers;
+    ArrayList<PlayerConnection> players;
 
 
-    ServerGameBridge(ServerConnector connector) throws IOException {
-        this.connector = connector;
-        connector.setServerBridge(this);
-        connector.initiateConnection();
+    ServerGameBridge(ArrayList<PlayerConnection> players, ArrayList<PlayerConnection> observers) throws IOException {
+        this.observers = observers;
+        this.players = players;
     }
 
-    void initiateGame(int dimention) {
-        if (game == null) {
-            this.game = new Game(dimention, this);
+    PlayerConnection getOpponent(PlayerConnection playerConnection) {
+        if (playerConnection.equals(players.get(0)))
+        {
+            return players.get(1);
+        }
+        else{
+            return players.get(0);
         }
     }
 
-    synchronized public void execute(String command, char color) {
-        ServerConnector.Connection otherPlayer;
+    void addObserver(PlayerConnection observer) {
+        observers.add(observer);
+    }
+
+    void initiateGame(int dimention) {
+        new Game(dimention, this);
+    }
+
+    synchronized public void execute(String command, PlayerConnection playerConnection) {
+
         String[] args;
-        if (color == 'b')
-            otherPlayer = connector.getWhitePlayerConnection();
-        else
-            otherPlayer = connector.getBlackPlayerConnection();
+
         switch (command.charAt(0)) {
-            case 'i':
-                int boardSize = Integer.parseInt(command.substring(1));
-                initiateGame(boardSize);
-                try {
-                    connector.connectSecondPlayer(boardSize);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
 
             case 't':
                 args = command.split("t");
-                tryToPlay(Integer.parseInt(args[1]), Integer.parseInt(args[2]), game.getPlayer(color));
+                tryToPlay(Integer.parseInt(args[1]), Integer.parseInt(args[2]), playerConnection);
                 break;
             case 'q':
-                otherPlayer.send("q");
+                playerConnection.sendQuit();
                 break;
             case 'g':
-                otherPlayer.send("g");
+                playerConnection.sendGiveUp();
                 break;
             case 'p':
-                otherPlayer.send("p");
-                game.pass();
+                playerConnection.sendPass();
+                pass(playerConnection);
                 break;
-            case 'c':
+         /*   case 'c':
                 args = command.split("c");
                 String[] subargs;
 
@@ -75,54 +75,74 @@ public class ServerGameBridge {
 
                 }
                 break;
-
+*/
 
         }
     }
 
-    void tryToPlay(int x, int y, Player player) {
-        ServerConnector.Connection connection;
-        if (player.getColor() == 'b') {
-            connection = connector.getBlackPlayerConnection();
-        } else {
-            connection = connector.getWhitePlayerConnection();
-        }
+    void pass(PlayerConnection playerConnection) {
+
         try {
-            game.makeMoveIfVaild(x, y, player);
-            sendFieldState();
-        } catch (OutOfBoardsBoundsException e) {
-            connection.send("b");
-        } catch (KoExeption koExeption) {
-            connection.send("k");
-        } catch (SuicidalTurnExeption suicidalTurnExeption) {
-            connection.send("s");
-        } catch (StoneAlreadyThereException e) {
-            connection.send("o");
+            getPlayer(playerConnection).pass();
+
         } catch (NotYourTurnExeption notYourTurnExeption) {
-            connection.send("n");
+            playerConnection.sendNotTurn();
+        }
+    }
+
+    void tryToPlay(int x, int y, PlayerConnection playerConnection) {
+
+
+        try {
+            play(x, y, playerConnection);
+
+        } catch (OutOfBoardsBoundsException e) {
+            playerConnection.sendNotInBounds();
+        } catch (KoExeption koExeption) {
+            playerConnection.sendKo();
+        } catch (SuicidalTurnExeption suicidalTurnExeption) {
+            playerConnection.sendSuicide();
+        } catch (StoneAlreadyThereException e) {
+            playerConnection.sendOccupied();
+        } catch (NotYourTurnExeption notYourTurnExeption) {
+            playerConnection.sendNotTurn();
         }
 
     }
 
-    public void sendFieldState() {
-        int[][] field = game.getFieldState();
-        int size = field.length;
-        StringBuilder com = new StringBuilder();
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++) {
-                com.append('t');
-                com.append(i);
-                com.append(':');
-                com.append(j);
-                com.append(':');
-                com.append(field[i][j]);
-            }
-        String command = com.toString();
-        connector.send(command);
+    public void sendFieldState(int[][] field) {
+
+        for (PlayerConnection observerConnection:observers
+             ) {
+            observerConnection.sendFieldState(field);
+        }
+        for (PlayerConnection playerConnection:players
+        ) {
+            playerConnection.sendFieldState(field);
+        }
 
     }
 
-    public void endGame() {
-        connector.send("e");
+    public void endGame(int scoreW, int scoreB) {
+        boolean BlackIsWinner = scoreW < scoreB ;
+
+            players.get(0).endGame(BlackIsWinner,scoreB);
+        players.get(0).endGame(!BlackIsWinner,scoreW);
+
+    }
+
+    public RealPlayer getPlayer(PlayerConnection connection) {
+        if (connection.equals(players.get(1))) {
+            return (RealPlayer) PlayerW.getPlayer();
+        } else if (connection.equals( players.get(0))) {
+            return (RealPlayer) PlayerB.getPlayer();
+        } else {
+            return (RealPlayer) FictionPlayer.getPlayer();
+        }
+    }
+
+    public void play(int x, int y, PlayerConnection playerConnection) throws SuicidalTurnExeption, NotYourTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
+        getPlayer(playerConnection).playStone(x, y);
+        sendFieldState(((RealPlayer)PlayerW.getPlayer()).getFieldState());
     }
 }

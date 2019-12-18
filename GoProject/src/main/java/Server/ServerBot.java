@@ -2,55 +2,94 @@ package Server;
 
 import java.util.Random;
 
-import Exceptions.KoExeption;
-import Exceptions.OutOfBoardsBoundsException;
-import Exceptions.StoneAlreadyThereException;
-import Exceptions.SuicidalTurnExeption;
+import Exceptions.*;
 import GameMaster.Board;
 import GameMaster.Player;
 
-//przepraszam jeżeli źle zapamiętałem jak miały nazywać się te metody
-public class ServerBot {
+public class ServerBot implements PlayerConnection {
+    private ServerGameBridge bridge;
+    private int size;
+    private Random random;
+    int turnCount  = 0;
+    public ServerBot(int size,boolean first) {
+        this.size = size;
+        this.random = new Random();
+        if(first)tryPlayUntillValid();
+        else turnCount =1;
 
-	private Board board;
-	private Player botPlayerWhite; // nie moglem wymyslec innego rozwiazania. Jak W bocie będzie zagnieżdzony
-									// Player to bedzie można go używac jak Playera przy użycie getters and setters
-	private Random random;
 
-	public ServerBot(Board board) {
-		this.board = board;
-		this.botPlayerWhite = new Player(2);
-		this.random = new Random();
-	}
 
-	public void tryPlayUntillValid() {
-		boolean validPlay = false;
+    }
 
-		while (validPlay == false) {
-			int x = random.nextInt() % board.getBoardSize();
-			int y = random.nextInt() % board.getBoardSize();
-			try {
-				board.playStone(x, y, botPlayerWhite);
-				validPlay = true;
-			} catch (StoneAlreadyThereException e) {
-				System.out.println("Bot thinks");
-			} catch (OutOfBoardsBoundsException e) {
-				System.out.println("Bot thinks");
-			} catch (KoExeption e) {
-				System.out.println("Bot thinks");
-			} catch (SuicidalTurnExeption e) {
-				System.out.println("Bot thinks");
-			}
-		}
-	}
+    public void setBridge(ServerGameBridge bridge) {
+        this.bridge = bridge;
+    }
 
-	public void setBoard(Board board) {
-		this.board = board;
-	}
+    @Override
+    public void sendQuit() {
+    }
 
-	public void pass() {
-		System.out.println("Bot passes");
-		// connection.pass();
-	}
+    @Override
+    public void sendGiveUp() {
+    }
+
+    @Override
+    public void sendPass() {
+        bridge.pass(this);
+    }
+
+    @Override
+    public void sendNotTurn() {
+    }
+
+    @Override
+    public void sendNotInBounds() {
+    }
+
+    @Override
+    public void sendKo() {
+    }
+
+    @Override
+    public void sendSuicide() {
+    }
+
+    @Override
+    public void sendOccupied() {
+    }
+
+    @Override
+    public void sendFieldState(int[][] field) {
+    }
+
+    @Override
+    public void endGame(boolean blackIsWinner, int scoreB) {
+    }
+
+    public void tryPlayUntillValid()  {
+        boolean validPlay = false;
+
+        while (!validPlay) {
+            int x = random.nextInt() % size;
+            int y = random.nextInt() % size;
+            try {
+                bridge.play(x, y,this);
+                validPlay = true;
+                turnCount = 0;
+            } catch (StoneAlreadyThereException e) {
+                System.out.println("Bot is complaining about how owecrouded this fiel is");
+            } catch (OutOfBoardsBoundsException e) {
+                System.out.println("Bot is aiming");
+            } catch (KoExeption e) {
+                System.out.println("Bot tries to avoid loops");
+            } catch (SuicidalTurnExeption e) {
+                System.out.println("Bot don't want to kill himself");
+            } catch (NotYourTurnExeption notYourTurnExeption) {
+                System.out.println("Bot is waiting");
+
+            }
+        }
+    }
+
 
 }

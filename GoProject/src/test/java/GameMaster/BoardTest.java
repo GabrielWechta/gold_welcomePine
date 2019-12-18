@@ -56,7 +56,7 @@ public class BoardTest {
 	public void TestBasicInsertion() {
 		Board board = new Board(6);
 
-		Player playerB = new Player(1, board);
+		Player playerB = new Player('b', board);
 
 		try {
 			playerB.playStone(0, 0);
@@ -82,7 +82,7 @@ public class BoardTest {
 	public void TestChainMerging() {
 		Board board = new Board(6);
 
-		Player playerB = new Player(1, board);
+		Player playerB = new Player('b', board);
 
 		try {
 			playerB.playStone(0, 1);

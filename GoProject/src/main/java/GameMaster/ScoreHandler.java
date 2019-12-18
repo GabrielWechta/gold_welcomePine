@@ -6,10 +6,10 @@ import java.util.Set;
 public class ScoreHandler {
 	private int scoreB = 0;
 	private int scoreW = 0;
-	private Board board;
+	private Game game;
 
-	public ScoreHandler(Board board) {
-		this.board = board;
+	public ScoreHandler(Game game) {
+		this.game = game;
 	}
 
 	/**
@@ -18,10 +18,10 @@ public class ScoreHandler {
 	public void calculateTerritoryScore() {
 		Set<Intersection> island = new HashSet<Intersection>();
 
-		for (int y = board.getBoardSize() - 1; y >= 0; y--) {
-			for (int x = 0; x < board.getBoardSize(); x++) {
-				if (board.getIntersection(x, y).isEmpty()) {
-					island = createIsland(board.getIntersection(x, y));
+		for (int y = game.getBoardSize() - 1; y >= 0; y--) {
+			for (int x = 0; x < game.getBoardSize(); x++) {
+				if (game.getIntersection(x, y).isEmpty()) {
+					island = createIsland(game.getIntersection(x, y));
 					checkIslandBorder(island);
 				}
 			}
@@ -30,8 +30,8 @@ public class ScoreHandler {
 
 	/** creates and fulfills islands with '9' */
 	public Set<Intersection> createIsland(Intersection intersection) {
-		Player calculatedPlayer = new Player(9);
-
+		Player calculatedPlayer = FictionPlayer.getPlayer();
+		calculatedPlayer.setGame(game);
 		Set<Intersection> newIsland = new HashSet<Intersection>();
 		Set<Intersection> changeIsland = new HashSet<Intersection>();
 		Set<Intersection> oldIsland = new HashSet<Intersection>();
@@ -85,7 +85,14 @@ public class ScoreHandler {
 		return scoreW;
 	}
 
-	public Board getBoard() {
-		return board;
+	public void addScoreW(int stonesKilled)
+	{
+		scoreW=+ stonesKilled;
+
+	}
+	public void addScoreB(int stonesKilled)
+	{
+		scoreB=+ stonesKilled;
+
 	}
 }
