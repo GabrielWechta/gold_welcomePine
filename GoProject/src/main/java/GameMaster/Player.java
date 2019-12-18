@@ -15,7 +15,7 @@ public interface Player {
                 player= PlayerW.getPlayer();
                 break;
             case 'n':
-                player= PlayerN.getPlayer();
+                player= FictionPlayer.getPlayer();
                 break;
         }
         return player;
@@ -28,4 +28,6 @@ public interface Player {
     boolean isEqual(Player player);
 
     int getNumber();
+
+
 }

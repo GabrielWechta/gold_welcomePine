@@ -37,6 +37,8 @@ public class EmptyPlayer implements Player {
         return 0;
     }
 
+
+
     public char getColor() {
         return color;
     }

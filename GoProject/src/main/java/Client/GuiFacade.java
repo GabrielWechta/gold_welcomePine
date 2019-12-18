@@ -14,17 +14,24 @@ public class GuiFacade {
 	private ClientServerBridge bridge;
 	private GoPanel goPanel;
 
-	public GuiFacade(char color, ClientServerBridge bridge) {
-		this.color = color;
+	public GuiFacade( ClientServerBridge bridge) {
+
 		this.bridge = bridge;
 		System.out.println(
 				"Welcome to go game by Ivan Feofilaktov and Gabriel Wechta. Pleasy type how much lines you want: ");
 		Scanner in = new Scanner(System.in);
 		boardSize = in.nextInt();
+		System.out.println("Pleasy type:\n-b to have first turn,\n-w to have second turn\n-p to be spectator");
+		while(true)
+			try{color = in.nextLine().charAt(0);
+			break;}
+		catch (Exception e){}
+		System.out.println("Pleasy type how many bots do you want");
+		int bots  = in.nextInt();
 		System.out.println("You are starting: " + boardSize + "x" + boardSize + " go game");
 		System.out.println("Goodluck");
 		board = new int[boardSize][boardSize];
-		bridge.initializeGame(boardSize);
+		bridge.initializeGame(boardSize,color,bots);
 	}
 
 	public GuiFacade(char color, int boardSize, ClientServerBridge bridge) {
@@ -123,20 +130,6 @@ public class GuiFacade {
 		quitFrame.setVisible(true);
 	}
 
-	public void claimTerritory() {
-		// todo
-	}
-
-	void sendClaims(int[][] isClaimed) {
-		// todo
-		// change and use this to send claims to server 0 -not claimed; 1 - claimed; 2 -
-		// claimed to be neutral;
-		bridge.sendClaims(isClaimed);
-	}
-
-	public void contGame() {
-		// todo
-	}
 
 	public void displayEndGame(boolean b) {
 		JFrame endGameFrame = new JFrame();

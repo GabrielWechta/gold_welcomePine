@@ -1,10 +1,6 @@
 package GameMaster;
 
 import Exceptions.*;
-import Server.ServerConnector;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class PlayerB implements RealPlayer {
 
@@ -39,7 +35,7 @@ public class PlayerB implements RealPlayer {
         wasInKoLastTurn = koState;
     }
 
-    public RealPlayer getOponent() {
+    public RealPlayer getOpponent() {
         return (RealPlayer) PlayerW.getPlayer();
     }
 
@@ -47,10 +43,6 @@ public class PlayerB implements RealPlayer {
         game.addScoreB(points);
     }
 
-    @Override
-    public ServerConnector.Connection getConnection(ServerConnector connector) {
-        return connector.getBlackPlayerConnection();
-    }
 
     @Override
     public void pass() throws NotYourTurnExeption {
@@ -76,5 +68,9 @@ public class PlayerB implements RealPlayer {
     @Override
     public int getNumber() {
         return 1;
+    }
+    @Override
+    public int[][] getFieldState() {
+        return game.getFieldState();
     }
 }

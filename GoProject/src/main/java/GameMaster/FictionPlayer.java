@@ -2,78 +2,79 @@ package GameMaster;
 
 import Exceptions.*;
 
-public class PlayerW implements RealPlayer {
+public class FictionPlayer implements RealPlayer {
 
-    private final char color = 'w';
-    private boolean wasInKoLastTurn = false;
+    private final char color = 'n';
     private static Player thisPlayer = null;
-    private Game game;
 
     public static Player getPlayer() {
         if (thisPlayer == null) {
-            thisPlayer = new PlayerW();
+            thisPlayer = new FictionPlayer();
         }
         return thisPlayer;
     }
 
-    private PlayerW() {
+    private FictionPlayer() {
     }
 
     public void setGame(Game game) {
-        this.game = game;
     }
-
 
     public char getColor() {
         return color;
     }
 
-    public boolean wasInKo() {
-        return wasInKoLastTurn;
-    }
-
-    public void setWasInKo(boolean koState) {
-        wasInKoLastTurn = koState;
-    }
-
-    public RealPlayer getOpponent() {
-        return (RealPlayer) PlayerB.getPlayer();
-    }
-
-    public void addScore(int points) {
-        game.addScoreW(points);
-    }
-
-
-
-    @Override
-    public void pass() throws NotYourTurnExeption {
-        game.pass(this);
-    }
-    @Override
-   public boolean isEqual(Player player){
-        return player == this;
-    }
-    @Override
-    public int getScore() {
-      return  game.getScoreW();
-    }
     @Override
     public boolean isEmpty() {
         return false;
     }
-    @Override
-    public void playStone(int x, int y) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
-        game.makeMoveIfVaild(x, y, this);
-    }
+
     @Override
     public int getNumber() {
-        return 2;
+        return 0;
     }
 
     @Override
-    public int[][] getFieldState() {
-        return game.getFieldState();
+    public boolean isEqual(Player player) {
+        return player == this;
     }
 
+
+    @Override
+    public boolean wasInKo() {
+        return false;
+    }
+
+    @Override
+    public void setWasInKo(boolean koState) {
+
+    }
+
+    @Override
+    public RealPlayer getOpponent() {
+        return this;
+    }
+
+    @Override
+    public void addScore(int points) {
+    }
+
+    @Override
+    public void pass() throws NotYourTurnExeption {
+
+    }
+    @Override
+    public int[][] getFieldState() {
+        return new int[1][1];
+    }
+
+    @Override
+    public int getScore() {
+        return 0;
+    }
+
+    @Override
+    public void playStone(int x, int y) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
+
+    }
 }

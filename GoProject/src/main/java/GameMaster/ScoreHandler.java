@@ -30,7 +30,7 @@ public class ScoreHandler {
 
 	/** creates and fulfills islands with '9' */
 	public Set<Intersection> createIsland(Intersection intersection) {
-		Player calculatedPlayer = PlayerN.getPlayer();
+		Player calculatedPlayer = FictionPlayer.getPlayer();
 		calculatedPlayer.setGame(game);
 		Set<Intersection> newIsland = new HashSet<Intersection>();
 		Set<Intersection> changeIsland = new HashSet<Intersection>();

@@ -172,7 +172,7 @@ public class Intersection {
     }
 
     public void die() {
-        ((RealPlayer)owner).getOponent().addScore(1);
+        ((RealPlayer)owner).getOpponent().addScore(1);
         setOwner(EmptyPlayer.getPlayer());
         for (Intersection intersection : getNotEmptyNeighbors()
         ) {

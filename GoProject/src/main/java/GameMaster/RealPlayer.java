@@ -1,25 +1,23 @@
 package GameMaster;
 
 import Exceptions.*;
-import Server.ServerConnector;
-import Server.ServerGameBridge;
 
 public interface RealPlayer extends Player {
 
 
-
-
-     boolean wasInKo();
+    boolean wasInKo();
 
     void setWasInKo(boolean koState);
 
-    RealPlayer getOponent();
+    RealPlayer getOpponent();
 
-     void addScore(int points);
-
-     ServerConnector.Connection getConnection(ServerConnector connector);
+    void addScore(int points);
 
     void pass() throws NotYourTurnExeption;
+
     int getScore();
+
+    int[][] getFieldState();
+
     void playStone(int x, int y) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption;
 }

@@ -1,9 +1,5 @@
 package GameMaster;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import Exceptions.*;
 import Server.ServerGameBridge;
 
@@ -32,7 +28,6 @@ public class Game {
     synchronized public boolean makeMoveIfVaild(int x, int y, RealPlayer player) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
         if (player.isEqual(turn)) {
             board.playStone(x, y, player);
-            sendFieldState();
             pass = false;
             switchTurn();
             return true;
@@ -41,7 +36,7 @@ public class Game {
         }
     }
 
-    public void pass(Player player) throws NotYourTurnExeption {
+  synchronized public void pass(Player player) throws NotYourTurnExeption {
         if (player.isEqual(turn)) {
             if (!pass) {
                 pass = true;
@@ -57,7 +52,7 @@ public class Game {
     }
 
     private void switchTurn() {
-        turn = turn.getOponent();
+        turn = turn.getOpponent();
     }
 
     public void sendFieldState() {
@@ -94,5 +89,9 @@ public class Game {
 
     public boolean boardContains(int x, int y) {
         return board.isIn(x, y);
+    }
+
+    public int[][] getFieldState() {
+     return   board.getFieldState();
     }
 }
