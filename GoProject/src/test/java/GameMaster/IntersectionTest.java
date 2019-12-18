@@ -1,4 +1,11 @@
-package Server;
+package GameMaster;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
@@ -7,23 +14,17 @@ import Exceptions.SuicidalTurnExeption;
 import GameMaster.Board;
 import GameMaster.Intersection;
 import GameMaster.Player;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-class IntersectionTest {
+public class IntersectionTest {
 
     Board board;
     Player f;
     Player s;
 
 
-    @BeforeEach
-    void setUp() {
-        board = new Board(6);
+    @Before
+    public void setUp() {
+        board = new Board(9);
 
         board.showBoard();
 
@@ -35,7 +36,7 @@ class IntersectionTest {
 
 
     @Test
-    void getX() {
+    public void getX() {
         try {
             f.playStone(1,1);
         } catch (OutOfBoardsBoundsException e) {
@@ -52,7 +53,7 @@ class IntersectionTest {
     }
 
     @Test
-    void getY() {
+    public void getY() {
         try {
             f.playStone(1,1);
         } catch (OutOfBoardsBoundsException e) {
@@ -68,7 +69,7 @@ class IntersectionTest {
     }
 
     @Test
-    void getOwner() {
+    public void getOwner() {
         try {
             f.playStone(1,1);
             s.playStone(2,2);
@@ -91,7 +92,7 @@ class IntersectionTest {
     }
 
     @Test
-    void putToken() {
+    public void putToken() {
 
         try {
             board.getIntersection(1,1).putToken(f);
@@ -105,8 +106,8 @@ class IntersectionTest {
         assertEquals(board.getIntersection(1,1).getOwner(),f);
     }
 
-    @org.junit.jupiter.api.Test
-    void getEmptyNeighbors() {
+    @Test
+    public void getEmptyNeighbors() {
         try {
             f.playStone(1,1);
             f.playStone(1,2);
@@ -126,7 +127,7 @@ class IntersectionTest {
         assertTrue(emptySpaces.contains(board.getIntersection(0,2)));
     }
     @Test
-    void getNotEmptyNeighbors() {
+    public void getNotEmptyNeighbors() {
         try {
             f.playStone(0,0);
             f.playStone(1,0);

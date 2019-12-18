@@ -1,23 +1,23 @@
-package Server;
+package GameMaster;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
-import GameMaster.Board;
-import GameMaster.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-class StoneChainTest {
+public class StoneChainTest {
     Board board;
     Player f;
     Player s;
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         board = new Board(6);
 
         board.showBoard();
@@ -30,11 +30,11 @@ class StoneChainTest {
 
 
     @Test
-    void getOwner() {
+    public void getOwner() {
     }
 
     @Test
-    void killTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
+    public void killTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
         f.playStone(0,0);
         s.playStone(1,0);
         s.playStone(0,1);
@@ -44,8 +44,8 @@ class StoneChainTest {
 
 
     }
-    @Test
-    void koTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
+    @Test(expected = KoExeption.class)
+    public void koTest() throws SuicidalTurnExeption, KoExeption, OutOfBoardsBoundsException, StoneAlreadyThereException {
 
         f.playStone(1,0);
         f.playStone(0,1);
@@ -66,6 +66,7 @@ class StoneChainTest {
     }
 
     @Test
-    void getStones() {
+    public void testingMerge() {
+    	
     }
 }
