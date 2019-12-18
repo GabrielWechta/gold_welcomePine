@@ -4,6 +4,11 @@ import Exceptions.KoExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
+import GameMaster.Board;
+import GameMaster.Intersection;
+import GameMaster.Player;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.List;
 
@@ -16,7 +21,7 @@ class IntersectionTest {
     Player s;
 
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         board = new Board(6);
 
@@ -29,7 +34,7 @@ class IntersectionTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getX() {
         try {
             f.playStone(1,1);
@@ -46,7 +51,7 @@ class IntersectionTest {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getY() {
         try {
             f.playStone(1,1);
@@ -62,7 +67,7 @@ class IntersectionTest {
         assertEquals(board.getIntersection(1,1).getY() , 1);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getOwner() {
         try {
             f.playStone(1,1);
@@ -85,7 +90,7 @@ class IntersectionTest {
         assertEquals(board.getIntersection(4,4).getOwner(),f);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void putToken() {
 
         try {
@@ -120,7 +125,7 @@ class IntersectionTest {
         assertTrue(emptySpaces.contains(board.getIntersection(2,2)));
         assertTrue(emptySpaces.contains(board.getIntersection(0,2)));
     }
-    @org.junit.jupiter.api.Test
+    @Test
     void getNotEmptyNeighbors() {
         try {
             f.playStone(0,0);
