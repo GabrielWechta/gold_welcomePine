@@ -2,6 +2,7 @@ package Server;
 
 public interface PlayerConnection {
     public void setBridge(ServerGameBridge bridge);
+    void makeTurn();
 
     void sendQuit();
 
