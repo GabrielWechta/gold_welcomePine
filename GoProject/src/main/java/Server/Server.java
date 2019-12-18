@@ -92,7 +92,7 @@ public class Server {
     }
 
 
-    static RealPlayerConnection connectPlayer(int size, char color) throws IOException {
+    public static RealPlayerConnection connectPlayer(int size, char color) throws IOException {
         RealPlayerConnection newPlayer = new RealPlayerConnection(listener.accept());
         newPlayer.setup();
         newPlayer.send("i" + ":" + color + ":" + size);

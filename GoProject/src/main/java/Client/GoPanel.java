@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 public class GoPanel extends JPanel {
 
 	private Square[][] board;
-	private boolean whiteToMove;
 	private int dimension;
 	private GuiFacade guiFacade;
 
@@ -21,7 +20,6 @@ public class GoPanel extends JPanel {
 		this.dimension = guiFacade.getBoardSize();
 		this.guiFacade = guiFacade;
 		board = new Square[dimension][dimension];
-		whiteToMove = false;
 		initBoard();
 	}
 
