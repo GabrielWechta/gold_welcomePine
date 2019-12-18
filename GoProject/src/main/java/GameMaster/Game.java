@@ -24,6 +24,16 @@ public class Game {
         this.scoreHandler = new ScoreHandler(this);
 
     }
+    
+    public Game(int size) {
+    	this.board = new Board(size);
+        this.playerB = (RealPlayer) PlayerB.getPlayer();
+        this.playerW = (RealPlayer) PlayerW.getPlayer();
+        playerB.setGame(this);
+        playerW.setGame(this);
+        turn = playerB;
+        this.scoreHandler = new ScoreHandler(this);
+    }
 
     synchronized public boolean makeMoveIfVaild(int x, int y, RealPlayer player) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption {
         if (player.isEqual(turn)) {
@@ -93,5 +103,9 @@ public class Game {
 
     public int[][] getFieldState() {
      return   board.getFieldState();
+    }
+    
+    public Board getBoard() {
+    	return this.board;
     }
 }

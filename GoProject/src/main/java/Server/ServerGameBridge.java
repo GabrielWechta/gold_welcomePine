@@ -31,7 +31,7 @@ public class ServerGameBridge {
         observers.add(observer);
     }
 
-    void initiateGame(int dimention) {
+    public void initiateGame(int dimention) {
         new Game(dimention, this);
     }
 

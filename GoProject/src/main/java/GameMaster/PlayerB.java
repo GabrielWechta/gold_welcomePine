@@ -8,6 +8,8 @@ public class PlayerB implements RealPlayer {
     private boolean wasInKoLastTurn = false;
     private static Player thisPlayer = null;
     private Game game;
+    
+    private Board board;
 
     public static Player getPlayer() {
         if (thisPlayer == null) {
@@ -18,6 +20,11 @@ public class PlayerB implements RealPlayer {
 
     private PlayerB() {
     }
+    
+    public PlayerB(Board board) {
+    	this.board = board;
+    }
+    
 
     public void setGame(Game game) {
         this.game = game;
@@ -72,5 +79,9 @@ public class PlayerB implements RealPlayer {
     @Override
     public int[][] getFieldState() {
         return game.getFieldState();
+    }
+    
+    public void playStoneForTest(int x, int y) throws OutOfBoardsBoundsException, KoExeption, SuicidalTurnExeption, StoneAlreadyThereException, NotYourTurnExeption{
+        board.playStone(x, y,  this);
     }
 }

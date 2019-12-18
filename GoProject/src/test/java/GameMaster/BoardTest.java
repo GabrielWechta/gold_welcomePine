@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import Exceptions.KoExeption;
+import Exceptions.NotYourTurnExeption;
 import Exceptions.OutOfBoardsBoundsException;
 import Exceptions.StoneAlreadyThereException;
 import Exceptions.SuicidalTurnExeption;
@@ -28,10 +29,6 @@ public class BoardTest {
 	@Test
 	public void TestBoardBasics() {
 		Board board = new Board(9);
-
-		assertEquals(null, board.getIntersection(0, 0).getOwner());
-		assertEquals(null, board.getIntersection(8, 8).getOwner());
-
 		assertEquals(true, board.isIn(8, 8));
 		assertEquals(true, board.isIn(3, 8));
 		assertEquals(false, board.isIn(-1, 8));
@@ -56,13 +53,14 @@ public class BoardTest {
 	public void TestBasicInsertion() {
 		Board board = new Board(6);
 
-		Player playerB = new Player('b', board);
+		PlayerB playerB = new PlayerB(board);
+		
 
 		try {
-			playerB.playStone(0, 0);
-			playerB.playStone(1, 0);
-			playerB.playStone(2, 0);
-			playerB.playStone(3, 3);
+			playerB.playStoneForTest(0, 0);
+			playerB.playStoneForTest(1, 0);
+			playerB.playStoneForTest(2, 0);
+			playerB.playStoneForTest(3, 3);
 		} catch (OutOfBoardsBoundsException e) {
 			e.printStackTrace();
 		} catch (KoExeption koExeption) {
@@ -71,24 +69,26 @@ public class BoardTest {
 			suicidalTurnExeption.printStackTrace();
 		} catch (StoneAlreadyThereException e) {
 			e.printStackTrace();
+		} catch (NotYourTurnExeption e) {
+			e.printStackTrace();
 		}
 
 		// board.showBoard();
 
-		assertEquals(1, board.getIntersection(0, 0).getOwner().getColor());
+		assertEquals('b', board.getIntersection(0, 0).getOwner().getColor());
 	}
 
 	@Test
 	public void TestChainMerging() {
 		Board board = new Board(6);
 
-		Player playerB = new Player('b', board);
+		PlayerB playerB = new PlayerB(board);
 
 		try {
-			playerB.playStone(0, 1);
-			playerB.playStone(0, 0);
-			playerB.playStone(1, 0);
-			playerB.playStone(2, 0);
+			playerB.playStoneForTest(0, 1);
+			playerB.playStoneForTest(0, 0);
+			playerB.playStoneForTest(1, 0);
+			playerB.playStoneForTest(2, 0);
 		} catch (OutOfBoardsBoundsException e) {
 
 		} catch (KoExeption koExeption) {
@@ -96,6 +96,9 @@ public class BoardTest {
 		} catch (SuicidalTurnExeption suicidalTurnExeption) {
 			suicidalTurnExeption.printStackTrace();
 		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		} catch (NotYourTurnExeption e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -103,7 +106,7 @@ public class BoardTest {
 		assertEquals(temp, board.getIntersection(0, 0).getStoneChain());
 
 		try {
-			playerB.playStone(2, 2);
+			playerB.playStoneForTest(2, 2);
 		} catch (OutOfBoardsBoundsException e) {
 			e.printStackTrace();
 		} catch (KoExeption koExeption) {
@@ -111,6 +114,9 @@ public class BoardTest {
 		} catch (SuicidalTurnExeption suicidalTurnExeption) {
 			suicidalTurnExeption.printStackTrace();
 		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		} catch (NotYourTurnExeption e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -118,7 +124,7 @@ public class BoardTest {
 		assertEquals(temp2, board.getIntersection(2, 2).getStoneChain());
 
 		try {
-			playerB.playStone(2, 1);
+			playerB.playStoneForTest(2, 1);
 		} catch (OutOfBoardsBoundsException e) {
 			e.printStackTrace();
 		} catch (KoExeption koExeption) {
@@ -126,6 +132,9 @@ public class BoardTest {
 		} catch (SuicidalTurnExeption suicidalTurnExeption) {
 			suicidalTurnExeption.printStackTrace();
 		} catch (StoneAlreadyThereException e) {
+			e.printStackTrace();
+		} catch (NotYourTurnExeption e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
