@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ClientConnector {
@@ -37,7 +38,7 @@ public class ClientConnector {
     }
 
     void initializeConnection() {
-        var pool = Executors.newFixedThreadPool(200);
+        ExecutorService pool = Executors.newFixedThreadPool(200);
         Runnable serverOutputProcessing = () -> {
             try {
                 processCommands();
@@ -65,7 +66,7 @@ public class ClientConnector {
 
     private void processCommands() {
         while (input.hasNextLine()) {
-            var command = input.nextLine();
+            String command = input.nextLine();
             System.out.println("Got:" + command);
             bridge.execute(command);
         }

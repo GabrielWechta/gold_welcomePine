@@ -22,7 +22,7 @@ public class ScoreHandlerTest {
 		Board board = new Board(9);
 		ScoreHandler scoreHandler = new ScoreHandler(board);
 
-		Player playerB = new Player(1, board);
+		Player playerB = new Player('b', board);
 
 		try {
 			playerB.playStone(2, 0);
@@ -54,7 +54,7 @@ public class ScoreHandlerTest {
 		Board board = new Board(9);
 		ScoreHandler scoreHandler = new ScoreHandler(board);
 
-		Player playerW = new Player(2, board);
+		Player playerW = new Player('', board);
 
 		try {
 			playerW.playStone(3, 3);

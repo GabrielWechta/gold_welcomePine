@@ -76,13 +76,13 @@ public class ClientServerBridge {
                 gui.displayEndGame(true);
                 break;
             case 'e':
-                gui.claimTerritory();
+                gui.displayEndGame(command.charAt(1));
                 break;
             case 'r':
                 if (command.charAt(1) == 0) {
                     gui.contGame();
                 } else {
-                   gui.displayEndGame(command.charAt(2));
+                    gui.displayEndGame(command.charAt(2));
                 }
 
                 break;

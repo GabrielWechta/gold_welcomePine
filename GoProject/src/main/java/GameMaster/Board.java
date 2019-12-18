@@ -48,9 +48,9 @@ public class Board {
         return intersections[x][y];
     }
 
-    public void playStone(int x, int y, Player owner) throws StoneAlreadyThereException, KoExeption, SuicidalTurnExeption, OutOfBoardsBoundsException {
+    public void playStone(int x, int y, RealPlayer player) throws StoneAlreadyThereException, KoExeption, SuicidalTurnExeption, OutOfBoardsBoundsException {
         if (isIn(x, y)) {
-            intersections[x][y].putToken(owner);
+            intersections[x][y].putToken(player);
         } else {
             throw new OutOfBoardsBoundsException();
         }
@@ -78,7 +78,7 @@ public class Board {
         int[][] board = new int[boardSize][boardSize];
         for (int i = 0; i < boardSize; i++)
             for (int j = 0; j < boardSize; j++) {
-                board[i][j] = intersections[i][j].getOwnerNumber();
+                board[i][j] = intersections[i][j].getOwner().getNumber();
             }
         return board;
     }

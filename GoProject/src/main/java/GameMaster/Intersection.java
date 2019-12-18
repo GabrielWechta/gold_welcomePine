@@ -11,61 +11,58 @@ public class Intersection {
 
     private final int x, y;
     private StoneChain stoneChain;
-    private Player owner = null;
+    private Player owner = EmptyPlayer.getPlayer();
     private Board board;
 
-    public void putToken(Player owner) throws StoneAlreadyThereException, KoExeption, SuicidalTurnExeption {
-        if (getOwner() != null)
+    public void putToken(RealPlayer player) throws StoneAlreadyThereException, KoExeption, SuicidalTurnExeption {
+        if (!owner.isEmpty())
             throw new StoneAlreadyThereException();
-        else if (isSuicidal(owner)) {
+        else if (isSuicidal(player)) {
             throw new SuicidalTurnExeption();
         } else {
-            owner.setWasInKo(false);
+            ((RealPlayer) player).setWasInKo(false);
             List<Intersection> neighbors = getNotEmptyNeighbors();
-            setOwner(owner);
-            new StoneChain(this, owner);
+            setOwner(player);
+            new StoneChain(this, player);
             if (!neighbors.isEmpty()) {
 
                 for (Intersection intersection : neighbors
                 ) {
                     intersection.removeLiberti(this);
-                    if (intersection.getOwner() != owner) {
-                        intersection.tryToKill(owner);
+                    if (!intersection.getOwner().isEqual(player)) {
+                        intersection.tryToKill(player);
                     } else {
-                        this.stoneChain.merge(intersection.getStoneChain());
+                        this.connect(intersection);
                     }
-
                 }
-
-
                 for (Intersection emptyIntersection : getEmptyNeighbors()
                 ) {
-                    stoneChain.addLiberti(emptyIntersection);
+                    addLiberti(emptyIntersection);
                 }
             }
             if (getChainLibertiesCount() != 1) {
-                owner.setWasInKo(false);
+                player.setWasInKo(false);
             }
         }
+    }
+
+    private void connect(Intersection intersection) {
+        stoneChain.merge(intersection.getStoneChain());
     }
 
     private void removeLiberti(Intersection intersection) {
         stoneChain.removeLiberti(intersection);
     }
-    private void tryToKill(Player killer) {
+
+    private void addLiberti(Intersection intersection) {
+        stoneChain.addLiberti(intersection);
+    }
+
+    private void tryToKill(RealPlayer killer) {
         stoneChain.tryToKill(killer);
     }
 
-
-    // regular constructor
-    public Intersection(int x, int y, StoneChain stoneChain, Board board) {
-        this.x = x;
-        this.y = y;
-        this.stoneChain = stoneChain;
-    }
-
     public Intersection(int x, int y, Board board) {
-        super();
         this.x = x;
         this.y = y;
         this.board = board;
@@ -79,28 +76,17 @@ public class Intersection {
         this.stoneChain = stoneChain;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public Player getOwner() {
         return owner;
     }
 
 
-    public void setOwner(Player owner) {
-        this.owner = owner;
+    public void setOwner(Player player) {
+        owner = player;
     }
 
     public boolean isEmpty() {
-        if (this.owner == null)
-            return true;
-        else
-            return false;
+        return owner.isEmpty();
     }
 
     public List<Intersection> getEmptyNeighbors() {
@@ -155,13 +141,13 @@ public class Intersection {
         return stoneChain.getLibertiesNumber();
     }
 
-    boolean isSuicidal(Player player) throws KoExeption {
+    boolean isSuicidal(RealPlayer  player) throws KoExeption {
         boolean isKilling = false;
         boolean isSuicidal = getEmptyNeighbors().isEmpty();
         for (Intersection neighbor : getNotEmptyNeighbors()
         ) {
             if (neighbor.getChainLibertiesCount() == 1) {
-                if (neighbor.getOwner() == player) {
+                if (neighbor.getOwner().isEqual(player)) {
                 } else {
                     isKilling = true;
                     if (neighbor.getChainStonesCount() == 1) {
@@ -171,7 +157,7 @@ public class Intersection {
                     }
 
                 }
-            } else if (neighbor.getOwner() == player) {
+            } else if (neighbor.getOwner().isEqual(player)) {
                 isSuicidal = false;
 
             }
@@ -186,20 +172,12 @@ public class Intersection {
     }
 
     public void die() {
-        setOwner(null);
+        ((RealPlayer)owner).getOponent().addScore(1);
+        setOwner(EmptyPlayer.getPlayer());
         for (Intersection intersection : getNotEmptyNeighbors()
         ) {
-            intersection.getStoneChain().addLiberti(this);
+            intersection.addLiberti(this);
         }
         setStoneChain(null);
-    }
-
-    public int getOwnerNumber() {
-        if (owner == null)
-            return 0;
-        if (owner.getColor() == 'b')
-            return 1;
-        else
-            return 2;
     }
 }

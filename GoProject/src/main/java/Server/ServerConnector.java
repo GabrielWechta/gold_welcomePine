@@ -1,6 +1,7 @@
 package Server;
 
 import GameMaster.Player;
+import GameMaster.RealPlayer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,11 +37,11 @@ public class ServerConnector {
         }
     }
 
-    Connection getWhitePlayerConnection() {
+    public Connection getWhitePlayerConnection() {
         return white;
     }
 
-    Connection getBlackPlayerConnection() {
+    public Connection getBlackPlayerConnection() {
         return black;
     }
 
@@ -56,7 +57,7 @@ public class ServerConnector {
         black.send(command);
     }
 
-    class Connection implements Runnable {
+    public class Connection implements Runnable {
         char color;
         Socket socket;
         Scanner input;
@@ -95,19 +96,22 @@ public class ServerConnector {
         private void processCommands() {
             boolean nextLine;
             while (true) {
+                nextLine = false;
                 try {
                     nextLine = input.hasNextLine();
-                    if (nextLine) {
-                        String command = input.nextLine();
-                        System.out.println("Got from" + color + ":" + command);
-                        bridge.execute(command, color);
-                        if (command.startsWith("q")) {
-                            return;
-                        }
-                    }
                 } catch (Exception e) {
 
                 }
+
+                if (nextLine) {
+                    String command = input.nextLine();
+                    System.out.println("Got from" + color + ":" + command);
+                    bridge.execute(command, (RealPlayer) Player.getPlayer(color));
+                    if (command.startsWith("q")) {
+                        return;
+                    }
+                }
+
 
             }
         }

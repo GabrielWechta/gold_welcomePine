@@ -1,13 +1,13 @@
 package Server;
 
 import Exceptions.*;
-import GameMaster.Game;
-import GameMaster.Player;
+import GameMaster.*;
 
 import java.io.IOException;
 
 public class ServerGameBridge {
-    private Game game = null;
+    RealPlayer playerW = (RealPlayer) PlayerW.getPlayer();
+    RealPlayer playerB = (RealPlayer)PlayerB.getPlayer();
     private ServerConnector connector;
 
 
@@ -18,18 +18,13 @@ public class ServerGameBridge {
     }
 
     void initiateGame(int dimention) {
-        if (game == null) {
-            this.game = new Game(dimention, this);
-        }
+        new Game(dimention,this);
     }
 
-    synchronized public void execute(String command, char color) {
-        ServerConnector.Connection otherPlayer;
+    synchronized public void execute(String command,RealPlayer player) {
+
         String[] args;
-        if (color == 'b')
-            otherPlayer = connector.getWhitePlayerConnection();
-        else
-            otherPlayer = connector.getBlackPlayerConnection();
+
         switch (command.charAt(0)) {
             case 'i':
                 int boardSize = Integer.parseInt(command.substring(1));
@@ -43,19 +38,19 @@ public class ServerGameBridge {
 
             case 't':
                 args = command.split("t");
-                tryToPlay(Integer.parseInt(args[1]), Integer.parseInt(args[2]), game.getPlayer(color));
+                tryToPlay(Integer.parseInt(args[1]), Integer.parseInt(args[2]),player);
                 break;
             case 'q':
-                otherPlayer.send("q");
+                player.getOponent().getConnection(connector).send("q");
                 break;
             case 'g':
-                otherPlayer.send("g");
+                player.getOponent().getConnection(connector).send("g");
                 break;
             case 'p':
-                otherPlayer.send("p");
-                game.pass();
+                player.getOponent().getConnection(connector).send("p");
+                pass(player);
                 break;
-            case 'c':
+         /*   case 'c':
                 args = command.split("c");
                 String[] subargs;
 
@@ -75,21 +70,26 @@ public class ServerGameBridge {
 
                 }
                 break;
-
+*/
 
         }
     }
-
-    void tryToPlay(int x, int y, Player player) {
-        ServerConnector.Connection connection;
-        if (player.getColor() == 'b') {
-            connection = connector.getBlackPlayerConnection();
-        } else {
-            connection = connector.getWhitePlayerConnection();
-        }
+    void pass(RealPlayer player)
+    {
+        ServerConnector.Connection connection = player.getConnection(connector);
         try {
-            game.makeMoveIfVaild(x, y, player);
-            sendFieldState();
+            player.pass();
+
+        } catch (NotYourTurnExeption notYourTurnExeption) {
+            connection.send("n");
+        }
+    }
+
+    void tryToPlay(int x, int y, RealPlayer player) {
+        ServerConnector.Connection connection = player.getConnection(connector);
+
+        try {
+            player.playStone(x, y);
         } catch (OutOfBoardsBoundsException e) {
             connection.send("b");
         } catch (KoExeption koExeption) {
@@ -104,8 +104,7 @@ public class ServerGameBridge {
 
     }
 
-    public void sendFieldState() {
-        int[][] field = game.getFieldState();
+    public void sendFieldState(int[][] field) {
         int size = field.length;
         StringBuilder com = new StringBuilder();
         for (int i = 0; i < size; i++)
@@ -122,7 +121,9 @@ public class ServerGameBridge {
 
     }
 
-    public void endGame() {
-        connector.send("e");
+    public void endGame(int scoreW,int scoreB) {
+        char winner = scoreW>=scoreB ? 'w':'b';
+        connector.getBlackPlayerConnection().send("e"+winner+scoreB);
+        connector.getWhitePlayerConnection().send("e"+winner+scoreW);
     }
 }
